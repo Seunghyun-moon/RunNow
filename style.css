@@ -1,0 +1,43 @@
+body {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
+    margin: 8px;
+    font-size: 0.95rem;
+}
+@media (max-width: 576px) {
+    body {
+        margin: 0;
+        font-size: 0.89rem;
+    }
+    .container {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    h3 {
+        padding: 16px
+    }
+    .filter {
+        padding: 0 16px;
+    }
+}
+.container {
+    max-width: 720px;
+}
+.marathon-card {
+    font-size: 0.95rem;
+}
+.marathon-card h5 {
+    font-size: 1.02rem;
+}
+.marathon-card .small, .marathon-card .badge {
+    font-size: 0.90em;
+}
+/* 날짜 박스 고정 크기 */
+.date-box {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    min-height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+}

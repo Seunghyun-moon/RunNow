@@ -5,47 +5,91 @@
     <title>RunNow</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            --bs-bg-opacity: 1;
-            background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
-            margin:20px;
-        }
-    </style>
-
-
+    <link rel="stylesheet" href="style.css"><!-- 추가: 분리된 CSS 파일 -->
 </head>
 <body>
     <div class="container">
         <h3 class="mb-4">2025 마라톤 일정 🏃‍♂️</h3>
+        <div class="mb-4 filter">
+          <!-- 지역 필터 버튼 UI: btn-group으로 변경 -->
+          <div class="mb-2">
+              <div class="btn-group" role="group" aria-label="지역 필터">
+                  <button class="btn btn-outline-dark filter-btn active" data-filter="all">전체 지역</button>
+                  <button class="btn btn-outline-dark filter-btn" data-filter="metro">수도권</button>
+                  <button class="btn btn-outline-dark filter-btn" data-filter="nonmetro">비수도권</button>
+              </div>
+          </div>
+          <!-- 코스 필터 버튼 UI: btn-group으로 변경 -->
+          <div class="mb-2">
+              <div class="btn-group" role="group" aria-label="코스 필터">
+                  <button class="btn btn-outline-dark course-filter-btn active" data-course="all">전체 코스</button>
+                  <button class="btn btn-outline-dark course-filter-btn" data-course="Full">Full</button>
+                  <button class="btn btn-outline-dark course-filter-btn" data-course="Half">Half</button>
+                  <button class="btn btn-outline-dark course-filter-btn" data-course="10km">10km</button>
+                  <button class="btn btn-outline-dark course-filter-btn" data-course="5km">5k이하</button>
+              </div>
+          </div>
+          <!-- 지난대회 보기 스위치 추가 -->
+          <div class="form-check form-switch d-flex align-items-center ms-1 mt-2">
+              <input class="form-check-input" type="checkbox" id="showPastSwitch">
+              <label class="form-check-label ms-2 small" for="showPastSwitch">지난대회 보기</label>
+          </div>
+        </div>
+        <div id="marathon-list"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
 
 <script type="text/javascript">
 const csvUrl = 'https://docs.google.com/spreadsheets/d/1z67BXtYTMB0PySBjvTMz_IOiOy3JCKCx/export?format=csv';
+
+// 수도권 지역명 리스트
+const metroRegions = ['서울', '경기', '인천'];
+
+let allCards = [];
 
 Papa.parse(csvUrl, {
   download: true,
   header: true,
   complete: function(results) {
     const data = results.data;
-    data.forEach(row => {
-        $('.container').append(`
+    $('#marathon-list').empty();
+    allCards = [];
+    data.forEach((row, idx) => {
+        const region = (row.Location || '').split(',')[0].trim();
+        const isMetro = metroRegions.includes(region);
 
-            <div class="card mb-3 shadow-sm rounded-4 bg-white">
+        // 날짜 비교용: Date1이 MM.DD 또는 YYYY.MM.DD 형식이라고 가정
+        let eventDate = null;
+        if (row.Date1) {
+            let today = new Date();
+            let year = today.getFullYear();
+            let dateStr = row.Date1.trim().replace(/\s/g, ''); // 공백 제거
+            if (/^\d{1,2}\.\d{1,2}$/.test(dateStr)) {
+                // MM.DD 형식
+                eventDate = new Date(year, Number(dateStr.split('.')[0]) - 1, Number(dateStr.split('.')[1]));
+            } else if (/^\d{4}\.\d{1,2}\.\d{1,2}$/.test(dateStr)) {
+                // YYYY.MM.DD 형식
+                let parts = dateStr.split('.');
+                eventDate = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+            }
+        }
+
+        // 카드 HTML 생성
+        const cardHtml = `
+            <div class="card border-light mb-3 shadow-sm rounded-4 bg-white marathon-card"
+                 data-region="${isMetro ? 'metro' : 'nonmetro'}"
+                 data-course="${(row.Course || '').replace(/\s/g,'')}"
+                 data-eventdate="${eventDate ? eventDate.toISOString().slice(0,10) : ''}">
             <div class="card-body p-3 d-flex flex-row align-items-center">
-                <!-- 날짜 박스 -->
-                <div class="bg-light rounded-3 d-flex flex-column justify-content-center align-items-center me-3" style="width: 80px; height: 80px;">
+                <div class="bg-light rounded-3 d-flex flex-column justify-content-center align-items-center me-3 date-box">
                 <div class="fw-light fs-4">${row.Date1}</div>
                 <div class="text-muted small">${row.Date2}</div>
                 </div>
-
-                <!-- 마라톤 정보 -->
                 <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-start mb-1">
                     <div>
@@ -56,49 +100,104 @@ Papa.parse(csvUrl, {
                     <span class="badge text-bg-dark">${row.Status}</span>
                     </div>
                 </div>
-
-                <!-- 태그들 -->
                 <div class="course-tags" data-course="${row.Course}"></div>
                 </div>
             </div>
             </div>
-        `);
-          
-        $('.course-tags').each(function () {
-            const courseStr = $(this).data('course'); // 예: "Half,10K,5K"
-            if (!courseStr) return;
-
-            const courses = courseStr.split(',').map(c => c.trim());
-
-            const tags = courses.map(course => {
-              let tagClass = 'text-bg-light';
-              if (/half/i.test(course)) tagClass = 'text-bg-dark';
-              else if (/full/i.test(course)) tagClass = 'text-bg-info';
-              return `<span class="badge rounded-pill ${tagClass}">${course}</span>`;
-              
-            });
-
-            $(this).html(tags.join(' '));
-          });
-          
-          $('.status').each(function () {
-            const statusText = $(this).text().trim(); // 예: '마감', '접수중', '예정'
-
-            // 상태에 따라 클래스 매핑
-            const statusClassMap = {
-              '마감': 'text-bg-light',
-              '접수중': 'text-bg-warning',
-              '예정': 'text-bg-dark'
-            };
-
-            const badgeClass = statusClassMap[statusText] || 'text-bg-secondary';
-
-            // 기존 텍스트 지우고 span 삽입
-            $(this).html(`<span class="badge ${badgeClass}">${statusText}</span>`);
-          });
-          
-
+        `;
+        allCards.push(cardHtml);
+        $('#marathon-list').append(cardHtml);
     });
+
+    // 태그 처리
+    $('.course-tags').each(function () {
+        const courseStr = $(this).data('course');
+        if (!courseStr) return;
+        const courses = courseStr.split(',').map(c => c.trim());
+        const tags = courses.map(course => {
+          let tagClass = 'text-bg-light';
+          if (/half/i.test(course)) tagClass = 'text-bg-dark';
+          else if (/full/i.test(course)) tagClass = 'text-bg-info';
+          return `<span class="badge rounded-pill ${tagClass}">${course}</span>`;
+        });
+        $(this).html(tags.join(' '));
+    });
+
+    // 상태 처리
+    $('.status').each(function () {
+        const statusText = $(this).text().trim();
+        const statusClassMap = {
+          '마감': 'text-bg-light',
+          '접수중': 'text-bg-warning',
+          '예정': 'text-bg-dark'
+        };
+        const badgeClass = statusClassMap[statusText] || 'text-bg-secondary';
+        $(this).html(`<span class="badge ${badgeClass}">${statusText}</span>`);
+    });
+
+    // 필터 버튼 이벤트
+    $('.filter-btn').on('click', function() {
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        filterCards();
+    });
+
+    $('.course-filter-btn').on('click', function() {
+        $('.course-filter-btn').removeClass('active');
+        $(this).addClass('active');
+        filterCards();
+    });
+
+    // 지난대회 보기 스위치 이벤트
+    $('#showPastSwitch').on('change', function() {
+        filterCards();
+    });
+
+    // 최초 로딩 시에도 필터 적용
+    $(function() {
+        filterCards();
+    });
+
+    function filterCards() {
+        const regionFilter = $('.filter-btn.active').data('filter');
+        const courseFilter = $('.course-filter-btn.active').data('course');
+        const showPast = $('#showPastSwitch').is(':checked');
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        $('.marathon-card').each(function() {
+            const region = $(this).data('region');
+            const courseRaw = ($(this).data('course') || '').toLowerCase();
+            let show = true;
+
+            // 지역 필터
+            if (regionFilter !== 'all' && region !== regionFilter) show = false;
+
+            // 코스 필터
+            if (courseFilter !== 'all') {
+                if (courseFilter === 'Full') {
+                    show = show && /full/i.test(courseRaw);
+                } else if (courseFilter === 'Half') {
+                    show = show && /half/i.test(courseRaw);
+                } else if (courseFilter === '10km') {
+                    show = show && /(1[0-2]k|10k|10km|11k|11km|12k|12km)/i.test(courseRaw);
+                } else if (courseFilter === '5km') {
+                    show = show && /\b([1-5]k|[1-5]km)\b/i.test(courseRaw);
+                }
+            }
+
+            // 지난대회 필터 (기본적으로 숨김)
+            if (!showPast) {
+                const eventDateStr = $(this).data('eventdate');
+                if (eventDateStr) {
+                    const eventDate = new Date(eventDateStr);
+                    if (eventDate < today) show = false;
+                }
+            }
+
+            $(this).toggle(show);
+        });
+    }
   }
 });
 </script>
