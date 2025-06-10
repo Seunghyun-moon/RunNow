@@ -61,3 +61,12 @@ body {
     max-width: 70px;
     max-height: 70px;
 }
+.course-tags .badge {
+  font-size: 0.78em;
+  font-weight: 400;
+  padding: 0.22em 0.5em;
+  border-radius: 1em;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  border: 1px solid #eee;
+}
