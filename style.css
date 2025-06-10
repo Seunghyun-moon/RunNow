@@ -46,6 +46,12 @@ body {
 .marathon-card .small, .marathon-card .badge {
     font-size: 0.90em;
 }
+.status .badge {
+  font-size: 0.78em;
+  font-weight: 400;
+  padding: 0.32em 0.7em;
+  border-radius: 1em;
+}
 /* 날짜 박스 고정 크기 */
 .date-box {
     width: 70px;

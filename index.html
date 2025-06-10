@@ -123,11 +123,15 @@ Papa.parse(csvUrl, {
                   </div>
                 </div>
                 <div class="flex-grow-1 ps-3">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div class="d-flex justify-content-between align-items-start mb-1">
                     <div class="d-flex align-items-center">
                       <h5 class="mb-0 fw-bold">${row.Name}</h5>
                     </div>
-                    <div class="status">${row.Status ? row.Status : ''}</div>
+                    <div class="status"
+                         data-regstart="${row.RegStart || ''}"
+                         data-regend="${row.RegEnd || ''}">
+                      ${row.RegStart && row.RegEnd ? row.RegStart + '~' + row.RegEnd : ''}
+                    </div>
                   </div>
                   <div class="text-muted small mb-1">${row.Location}</div>
                   <div class="course-tags" data-course="${row.Course}"></div>
@@ -153,16 +157,82 @@ Papa.parse(csvUrl, {
         $(this).html(tags.join(' '));
     });
 
-    // 상태 처리
-    $('.status').each(function () {
-        const statusText = $(this).text().trim();
-        const statusClassMap = {
-          '마감': 'text-bg-light',
-          '접수중': 'text-bg-warning',
-          '예정': 'text-bg-dark'
-        };
-        const badgeClass = statusClassMap[statusText] || 'text-bg-secondary';
-        $(this).html(`<span class="badge ${badgeClass}">${statusText}</span>`);
+    // 지난대회일 경우 상태값을 '종료'로 변경
+    $('.marathon-card').each(function () {
+        const $card = $(this);
+        const eventDateStr = $card.data('eventdate');
+        const statusDiv = $card.find('.status');
+        const regStartStr = statusDiv.data('regstart') || statusDiv.text().split('~')[0].trim();
+        const regEndStr = statusDiv.data('regend') || statusDiv.text().split('~')[1]?.trim();
+        let statusHtml = '';
+        const now = new Date();
+        now.setSeconds(0,0);
+
+        // 1. 대회 날짜가 지났으면 '종료'
+        if (eventDateStr) {
+            const eventDate = new Date(eventDateStr);
+            if (eventDate < now) {
+                statusHtml = `<span class="badge text-bg-light">종료</span>`;
+                statusDiv.html(statusHtml);
+                return;
+            }
+        }
+
+        // 2. 접수 시작/마감 처리
+        let regStart = parseDate(regStartStr);
+        let regEnd = parseDate(regEndStr);
+
+        if (regStart && now < regStart) {
+            // 접수 시작 전
+            const diff = Math.ceil((regStart - now) / (1000 * 60 * 60 * 24));
+            statusHtml = `<span class="badge text-bg-info">접수시작 ${diff}일전</span>`;
+        } else if (regEnd && now <= regEnd) {
+            // 접수 마감 전
+            const diffMs = regEnd - now;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            if (diffDays >= 1) {
+                statusHtml = `<span class="badge text-bg-warning">마감 ${diffDays}일전</span>`;
+            } else {
+                statusHtml = `<span class="badge text-bg-warning">마감 ${diffHours}시간전</span>`;
+            }
+        } else if (regEnd && now > regEnd) {
+            // 접수 마감
+            statusHtml = `<span class="badge text-bg-light">접수마감</span>`;
+        } else {
+            statusHtml = '';
+        }
+
+        statusDiv.html(statusHtml);
+
+        // 날짜 파싱 함수 (YYYY.MM.DD [오전/오후 HH:MM:SS] 지원)
+        function parseDate(str) {
+            if (!str) return null;
+            str = str.trim();
+            // 예: 2025. 6. 14 오전 12:00:00 또는 2025.06.14 오후 3:30:00
+            const regex = /^(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})(?:\s*(오전|오후)\s*(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/;
+            const match = str.match(regex);
+            if (match) {
+                let year = Number(match[1]);
+                let month = Number(match[2]) - 1;
+                let day = Number(match[3]);
+                let hour = 0, minute = 0, second = 0;
+                if (match[4]) {
+                    hour = Number(match[5]);
+                    if (match[4] === '오후' && hour < 12) hour += 12;
+                    if (match[4] === '오전' && hour === 12) hour = 0;
+                    minute = Number(match[6]);
+                    second = match[7] ? Number(match[7]) : 0;
+                }
+                return new Date(year, month, day, hour, minute, second);
+            }
+            // 기본 YYYY.MM.DD
+            const parts = str.split('.');
+            if (parts.length >= 3) {
+                return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+            }
+            return null;
+        }
     });
 
     // 지역 드롭다운 동적 옵션 추가
