@@ -1,19 +1,30 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Grandiflora+One&display=swap');
+
+
+.grandiflora-one-regular {
+  font-family: "Grandiflora One", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
 body {
     --bs-bg-opacity: 1;
-    background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
+    background-color: #eee;
     margin: 0px;
     font-size: 0.95rem;
 }
 h4 {
-    padding: 16px
+    padding: 16px;
+    strong {
+        font-weight: 900;
+    }
 }
 header {
-    background: #fff;
-    box-shadow: 0 2px 8px -8px #888;
         & ~ div {
         max-width: 720px;
         margin: 0 auto;
-        padding: 0 16px;
+        padding: 0 16px 16px;
     }
 }
 .filter {
@@ -21,10 +32,14 @@ header {
     top: 0;
     z-index: 100;
     padding: 8px 16px;
-    background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
+    background-color: #eee !important;
 }
 .marathon-card {
-    font-size: 0.95rem;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-top: none !important;
+    box-shadow: none !important;
+    margin-bottom: 1px !important;
 }
 .marathon-card h5 {
     font-size: 1.02rem;
@@ -47,14 +62,32 @@ header {
     max-width: 70px;
     max-height: 70px;
 }
-.course-tags .badge {
-  font-size: 0.78em;
-  font-weight: 400;
-  padding: 0.22em 0.5em;
-  border-radius: 1em;
-  margin-right: 2px;
-  margin-bottom: 2px;
-  border: 1px solid #eee;
+.course-tags {
+    position: relative;
+    left: -3px;
+    .badge {
+    font-size: 0.78em;
+    font-weight: 400;
+    padding: 0.22em 0.5em;
+    border-radius: 1em;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    border: 1px solid #eee;
+    }
+}
+a.link {
+        color: #6279EB;
+        text-decoration: none;
+}
+
+/* 아바타 4색상 */
+.avatar-color-periwinkle { background: #6279EB !important; color: #fff; }
+.avatar-color-ladypink   { background: #F3CCD9 !important; color: #EF744A; }
+.avatar-color-coral      { background: #EF744A !important; color: #fff; }
+.avatar-color-whisperblue{ background: #B2DBF7 !important; color: #6279EB; }
+.avatar {
+    font-family: "Grandiflora One", cursive;
+    font-weight: 400;
 }
 
 @media (max-width: 576px) {
@@ -63,21 +96,12 @@ header {
         font-size: 0.89rem;
     }
     #marathon-list {
-        padding: 0;
     }
     .filter {
         padding: 16px;
     }
     /* 모바일에서 카드 간격 제거 및 라인 구분 */
-    .marathon-card {
-        margin-bottom: 0 !important;
-        border-radius: 0 !important;
-        border-left: 0 !important;
-        border-right: 0 !important;
-        border-top: none !important;
-        border-bottom: 1px solid #e0e0e0 !important;
-        box-shadow: none !important;
-    }
+
     /* 마지막 카드의 하단 라인 제거 */
     #marathon-list .marathon-card:last-child {
         border-bottom: none !important;

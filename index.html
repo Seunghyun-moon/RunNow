@@ -9,13 +9,13 @@
 </head>
 <body>
     <header>
-      <h4 class="mb-2"><strong>Run Now</strong> 🏃‍♂️ 2025 마라톤</h4>
+      <h4><strong>Run Now</strong> 🏃‍♂️ 2025 마라톤</h4>
     </header>
 
     <!-- 지역 필터 드롭다운 -->
     <div class="filter d-flex align-items-center mb-2 gap-2">
       <div class="dropdown d-inline-block">
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="regionDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm btn-dark dropdown-toggle" type="button" id="regionDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
           지역
         </button>
         <ul class="dropdown-menu" aria-labelledby="regionDropdownBtn" id="regionDropdownMenu" style="max-height:260px;overflow:auto;">
@@ -28,7 +28,7 @@
       </div>
       <!-- 코스 필터 드롭다운 -->
       <div class="dropdown d-inline-block">
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="courseDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm btn-dark dropdown-toggle" type="button" id="courseDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
           코스
         </button>
         <ul class="dropdown-menu" aria-labelledby="courseDropdownBtn" id="courseDropdownMenu"></ul>
@@ -100,22 +100,23 @@ Papa.parse(csvUrl, {
         // 카드 HTML 생성
         const hasLogo = row.logo && row.logo.trim() !== '';
         const avatarOrLogo = hasLogo
-          ? `<img src="${row.logo}" alt="로고" style="width:48px; height:48px; object-fit:cover; border-radius:30%; background:#fff;">`
-          : `<div class="avatar text-white rounded-circle d-flex align-items-center justify-content-center mx-auto"
-                style="width:48px; height:48px; font-size:1.3em; background:${getAvatarColor(row.Name)};">
+          ? `<img src="${row.logo}" alt="로고" style="width:48px; height:48px; object-fit:cover; border-radius:50%; background:#fff;">`
+          : `<div class="avatar rounded-circle d-flex align-items-center justify-content-center mx-auto ${getAvatarColorClass(row.Name)}"
+                 style="width:48px; height:48px; font-size:1.3em;">
                 ${getAvatarText(row.Name)}
-            </div>`;
+             </div>`;
 
         const cardHtml = `
             <div class="card border-light mb-3 shadow-sm rounded-4 bg-white marathon-card"
                 data-region-type="${isMetro ? 'metro' : 'nonmetro'}"
                 data-region-name="${region}"
                 data-course="${(row.Course || '').replace(/\s/g,'')}"
-                data-eventdate="${eventDate ? eventDate.toISOString().slice(0,10) : ''}">
+                data-eventdate="${eventDate ? eventDate.toISOString().slice(0,10) : ''}"
+                ${row.link && row.link.trim() !== '' ? `data-link="${row.link.trim()}" style="cursor:pointer;"` : ''}>
               <div class="card-body p-3 d-flex flex-row align-items-start">
                 <!-- 날짜+요일, 아바타/로고 + 구분선 -->
                 <div class="d-flex flex-column align-items-center justify-content-start pe-3"
-                    style="min-width:72px;">
+                    style="min-width:74px;">
                   <div class="fw-semibold text-center mb-2" style="line-height:1.1;">
                     ${formatDateWithDay(row.Date1)}
                   </div>
@@ -135,7 +136,17 @@ Papa.parse(csvUrl, {
                     </div>
                   </div>
                   <div class="text-muted small mb-1">${row.Location}</div>
+                  <div class="d-flex align-items-center justify-content-between">
                   <div class="course-tags" data-course="${row.Course}"></div>
+                  ${
+                    row.link && row.link.trim() !== ''
+                      ? ''
+                      : `<span class="opacity-50 ms-2" title="홈페이지 없음" style="font-size:1.4em; user-select:none; display:flex; align-items:center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 -960 960 960" width="22" fill="#bdbdbd">
+                              <path d="m770-302-60-62q40-11 65-42.5t25-73.5q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 57-29.5 105T770-302ZM634-440l-80-80h86v80h-6ZM792-56 56-792l56-56 736 736-56 56ZM440-280H280q-83 0-141.5-58.5T80-480q0-69 42-123t108-71l74 74h-24q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h65l79 80H320Z"/>
+                            </svg>
+                         </span>`
+                  }
                 </div>
               </div>
             </div>
@@ -395,19 +406,32 @@ Papa.parse(csvUrl, {
         return name.trim().slice(0, 2);
     }
 
-    // 아바타 색상 생성 (HSL 포맷)
-    function getAvatarColor(name) {
-        // HSL 색상: 0~360(색상), 25~35%(채도), 70~78%(명도)로 제한 (저채도, 밝은 파스텔)
-        let hash = 0;
-        for (let i = 0; i < name.length; i++) {
-            hash = name.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        const hue = Math.abs(hash) % 360;
-        const saturation = 25 + (Math.abs(hash) % 11); // 25~35%
-        const lightness = 70 + (Math.abs(hash) % 9);  // 70~78%
-        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    // 4가지 아바타 컬러 클래스 중 하나를 이름별로 랜덤하게 적용
+    function getAvatarColorClass(name) {
+        const classes = [
+            'avatar-color-periwinkle',
+            'avatar-color-ladypink',
+            'avatar-color-coral',
+            'avatar-color-whisperblue'
+        ];
+        // 이름의 유니코드 합으로 인덱스 결정 (항상 동일인에 동일색)
+        let sum = 0;
+        for (let i = 0; i < name.length; i++) sum += name.charCodeAt(i);
+        return classes[sum % classes.length];
     }
+
   }
+});
+
+// 카드 클릭 시 홈페이지로 이동 (링크가 있을 때만)
+$(document).on('click', '.marathon-card', function(e) {
+    const link = $(this).data('link');
+    if (link) {
+        // 텍스트 선택 등 방지
+        if (!window.getSelection().toString()) {
+            window.open(link, '_blank', 'noopener');
+        }
+    }
 });
 </script>
 
