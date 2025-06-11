@@ -85,10 +85,10 @@ a.link {
 .avatar-color-ladypink   { background: #F3CCD9 !important; color: #EF744A; }
 .avatar-color-coral      { background: #EF744A !important; color: #fff; }
 .avatar-color-whisperblue{ background: #B2DBF7 !important; color: #6279EB; }
-.avatar {
+/* .avatar {
     font-family: "Grandiflora One", cursive;
     font-weight: 400;
-}
+} */
 
 @media (max-width: 576px) {
     body {
