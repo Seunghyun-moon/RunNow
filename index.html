@@ -8,39 +8,39 @@
     <link rel="stylesheet" href="style.css"><!-- 추가: 분리된 CSS 파일 -->
 </head>
 <body>
-    <div class="container">
-        <h3 class="mb-2">2025 마라톤 일정 🏃‍♂️</h3>
-        <div class="mb-4 filter">
-          <!-- 지역 필터 드롭다운 -->
-          <div class="d-flex align-items-center mb-2 gap-2">
-            <div class="dropdown d-inline-block">
-              <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" id="regionDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                전체 지역
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="regionDropdownBtn" id="regionDropdownMenu" style="max-height:260px;overflow:auto;">
-                <li><a class="dropdown-item region-filter-item" href="#" data-region="all">전체 지역</a></li>
-                <li><a class="dropdown-item region-filter-item" href="#" data-region="metro">수도권</a></li>
-                <li><a class="dropdown-item region-filter-item" href="#" data-region="nonmetro">비수도권</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <!-- 동적 지역 옵션이 이 아래에 추가됩니다 -->
-              </ul>
-            </div>
-            <!-- 코스 필터 드롭다운 -->
-            <div class="dropdown d-inline-block">
-              <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" id="courseDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                전체 코스
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="courseDropdownBtn" id="courseDropdownMenu"></ul>
-            </div>
-            <!-- 지난대회 보기 스위치 -->
-            <div class="form-check form-switch d-flex align-items-center">
-                <input class="form-check-input" type="checkbox" id="showPastSwitch">
-                <label class="form-check-label ms-2" for="showPastSwitch">지난대회 보기</label>
-            </div>
-          </div>
-        </div>
-        <div id="marathon-list"></div>
+    <header>
+      <h4 class="mb-2"><strong>Run Now</strong> 🏃‍♂️ 2025 마라톤</h4>
+    </header>
+
+    <!-- 지역 필터 드롭다운 -->
+    <div class="filter d-flex align-items-center mb-2 gap-2">
+      <div class="dropdown d-inline-block">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="regionDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+          지역
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="regionDropdownBtn" id="regionDropdownMenu" style="max-height:260px;overflow:auto;">
+          <li><a class="dropdown-item region-filter-item" href="#" data-region="all">전체 지역</a></li>
+          <li><a class="dropdown-item region-filter-item" href="#" data-region="metro">수도권</a></li>
+          <li><a class="dropdown-item region-filter-item" href="#" data-region="nonmetro">비수도권</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <!-- 동적 지역 옵션이 이 아래에 추가됩니다 -->
+        </ul>
+      </div>
+      <!-- 코스 필터 드롭다운 -->
+      <div class="dropdown d-inline-block">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="courseDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+          코스
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="courseDropdownBtn" id="courseDropdownMenu"></ul>
+      </div>
+      <!-- 지난대회 보기 스위치 -->
+      <div class="form-check form-switch d-flex align-items-center">
+          <input class="form-check-input" type="checkbox" id="showPastSwitch">
+          <label class="form-check-label ms-2" for="showPastSwitch">지난대회 보기</label>
+      </div>
+
     </div>
+    <div id="marathon-list"></div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -100,7 +100,7 @@ Papa.parse(csvUrl, {
         // 카드 HTML 생성
         const hasLogo = row.logo && row.logo.trim() !== '';
         const avatarOrLogo = hasLogo
-          ? `<img src="${row.logo}" alt="로고" style="width:48px; height:48px; object-fit:cover; border-radius:50%; background:#fff;">`
+          ? `<img src="${row.logo}" alt="로고" style="width:48px; height:48px; object-fit:cover; border-radius:30%; background:#fff;">`
           : `<div class="avatar text-white rounded-circle d-flex align-items-center justify-content-center mx-auto"
                 style="width:48px; height:48px; font-size:1.3em; background:${getAvatarColor(row.Name)};">
                 ${getAvatarText(row.Name)}
