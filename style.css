@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Grandiflora+One&display=swap');
 
 
@@ -40,6 +39,9 @@ header {
     border-top: none !important;
     box-shadow: none !important;
     margin-bottom: 1px !important;
+    &:hover {
+        background-color: #f8f9fa !important;
+    }
 }
 .marathon-card h5 {
     font-size: 1.02rem;
@@ -90,6 +92,11 @@ a.link {
     font-weight: 400;
 } */
 
+#regionDropdownMenu {
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+}
+
 @media (max-width: 576px) {
     body {
         margin: 0;
@@ -106,4 +113,87 @@ a.link {
     #marathon-list .marathon-card:last-child {
         border-bottom: none !important;
     }
+}
+
+/* 지난대회보기 토글스위치 다크 스타일 - on/off 대비 명확, 내부 원 정렬 개선 */
+.form-check.form-switch {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.form-check.form-switch .form-check-input {
+    width: 2.2em;
+    height: 1.2em;
+    min-width: 2.2em;
+    min-height: 1.2em;
+    background-color: #e0e0e0 !important;   /* OFF 상태: 밝은 회색 */
+    border-color: #bdbdbd !important;
+    box-shadow: none;
+    transition: background 0.2s, border-color 0.2s;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    background-image: none;
+    border-radius: 1.2em;
+    vertical-align: middle;
+    outline: none;
+}
+
+.form-check.form-switch .form-check-input:checked {
+    background-color: #181818 !important;   /* ON 상태: 진한 검정 */
+    border-color: #181818 !important;
+}
+
+.form-check.form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 0.15rem rgba(24,24,24,0.15) !important;
+}
+
+.form-check.form-switch .form-check-input:after {
+    content: "";
+    display: block;
+    width: 1em;
+    height: 1em;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0.03em;      /* 위아래 균형 맞춤 */
+    left: 0.03em;    /* OFF 상태: 왼쪽 */
+    transition: left 0.2s, background 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    border: 1.5px solid #bdbdbd;
+}
+
+.form-check.form-switch .form-check-input:checked:after {
+    left: 1.07em;    /* ON 상태: 오른쪽 */
+    border: 1.5px solid #181818;
+}
+
+.form-check.form-switch .form-check-input {
+    /* 내부 원이 수직 가운데 오도록 line-height 조정 */
+    line-height: 1.2em;
+}
+
+/* 접수상태 outline 스타일 */
+.badge.status-outline {
+    background: #fff !important;
+    border: 1.5px solid #181818 !important;
+    color: #181818 !important;
+    font-weight: 500;
+}
+.badge.status-outline.info {
+    border-color: #0dcaf0 !important;
+    color: #0dcaf0 !important;
+}
+.badge.status-outline.success {
+    border-color: #198754 !important;
+    color: #198754 !important;
+}
+.badge.status-outline.warning {
+    border-color: #ffc107 !important;
+    color: #ffc107 !important;
+}
+.badge.status-outline.light {
+    border-color: #bdbdbd !important;
+    color: #888 !important;
 }

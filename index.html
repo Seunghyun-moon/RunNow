@@ -206,22 +206,22 @@ Papa.parse(csvUrl, {
         let regEnd = parseDate(regEndStr);
 
         if (regStart && now < regStart) {
-            // 접수 시작 전
-            const diff = Math.ceil((regStart - now) / (1000 * 60 * 60 * 24));
-            statusHtml = `<span class="badge text-bg-info">접수시작 ${diff}일전</span>`;
+            statusHtml = `<span class="badge status-outline info">${regStart.getMonth() + 1}.${regStart.getDate()}부터 접수</span>`;
         } else if (regEnd && now <= regEnd) {
-            // 접수 마감 전
             const diffMs = regEnd - now;
             const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-            if (diffDays >= 1) {
-                statusHtml = `<span class="badge text-bg-warning">마감 ${diffDays}일전</span>`;
+            if (diffDays >= 20) {
+                statusHtml = `<span class="badge status-outline success">접수중</span>`;
+            } else if (diffDays >= 1) {
+                statusHtml = `<span class="badge status-outline warning">마감 ${diffDays}일전</span>`;
             } else {
-                statusHtml = `<span class="badge text-bg-warning">마감 ${diffHours}시간전</span>`;
+                statusHtml = `<span class="badge status-outline warning">마감 ${diffHours}시간전</span>`;
             }
         } else if (regEnd && now > regEnd) {
-            // 접수 마감
-            statusHtml = `<span class="badge text-bg-light">접수마감</span>`;
+            statusHtml = `<span class="badge status-outline light">접수마감</span>`;
+        } else if (eventDateStr && new Date(eventDateStr) < now) {
+            statusHtml = `<span class="badge status-outline light">종료</span>`;
         } else {
             statusHtml = '';
         }
@@ -423,14 +423,41 @@ Papa.parse(csvUrl, {
   }
 });
 
-// 카드 클릭 시 홈페이지로 이동 (링크가 있을 때만)
-$(document).on('click', '.marathon-card', function(e) {
-    const link = $(this).data('link');
-    if (link) {
-        // 텍스트 선택 등 방지
-        if (!window.getSelection().toString()) {
-            window.open(link, '_blank', 'noopener');
+// 드롭다운 관련 스크립트 상단에 아래 변수 선언 추가
+let dropdownJustClosed = false;
+
+// 드롭다운 외부 클릭 시 드롭다운만 닫고, 카드 클릭 이벤트는 실행되지 않게 처리
+$(document).on('mousedown', function(e) {
+    if (
+        $('.dropdown-menu.show').length > 0 &&
+        !$(e.target).closest('.dropdown-menu').length &&
+        !$(e.target).closest('.dropdown-toggle').length
+    ) {
+        $('.dropdown-menu.show').each(function() {
+            const $menu = $(this);
+            const $btn = $menu.siblings('.dropdown-toggle');
+            if ($btn.length) {
+                $btn.dropdown('hide');
+            }
+        });
+        // 카드 클릭 이벤트 차단 플래그 설정
+        if ($(e.target).closest('.marathon-card').length) {
+            dropdownJustClosed = true;
         }
+    }
+});
+
+// 카드 클릭 이벤트에서 드롭다운이 방금 닫혔으면 클릭 무시
+$(document).on('click', '.marathon-card', function(e) {
+    if (dropdownJustClosed) {
+        dropdownJustClosed = false;
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        return;
+    }
+    const link = $(this).data('link');
+    if (link && !window.getSelection().toString()) {
+        window.open(link, '_blank', 'noopener');
     }
 });
 </script>
