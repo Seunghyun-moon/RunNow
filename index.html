@@ -336,6 +336,24 @@ Papa.parse(csvUrl, {
         const course = $(this).data('course');
         localStorage.setItem('selectedCourse', course);
     });
+    // 코스 필터 체크박스 변경 시 localStorage에 저장
+    $(document).on('change', '.course-filter-checkbox', function() {
+        // "전체 코스" 체크 시 나머지 해제, 나머지 체크 시 "전체 코스" 해제
+        if ($(this).val() === 'all') {
+            if ($(this).is(':checked')) {
+                $('.course-filter-checkbox').not(this).prop('checked', false);
+            }
+        } else {
+            $('.course-filter-checkbox[value="all"]').prop('checked', false);
+        }
+        // 버튼 텍스트 변경
+        const checked = $('.course-filter-checkbox:checked').map(function(){ return $(this).parent().text().trim(); }).get();
+        $('#courseDropdownBtn').text(checked.length === 0 || checked.includes('전체 코스') ? '전체 코스' : checked.join(', '));
+        // 아래 코드 추가
+        const checkedValues = $('.course-filter-checkbox:checked').map(function(){ return $(this).val(); }).get();
+        localStorage.setItem('selectedCourses', JSON.stringify(checkedValues));
+        filterCards();
+    });
 
     // 2. 페이지 로드 시 localStorage에서 값 읽어와 필터 적용
     $(document).ready(function() {
@@ -347,6 +365,16 @@ Papa.parse(csvUrl, {
         }
         if (savedCourse) {
             $(`.course-filter-item[data-course="${savedCourse}"]`).trigger('click');
+        }
+        const savedCourses = JSON.parse(localStorage.getItem('selectedCourses') || '[]');
+        if (savedCourses.length > 0) {
+            $('.course-filter-checkbox').each(function() {
+                $(this).prop('checked', savedCourses.includes($(this).val()));
+            });
+            // 버튼 텍스트 및 필터 적용
+            const checked = $('.course-filter-checkbox:checked').map(function(){ return $(this).parent().text().trim(); }).get();
+            $('#courseDropdownBtn').text(checked.length === 0 || checked.includes('전체 코스') ? '전체 코스' : checked.join(', '));
+            filterCards();
         }
     });
 
