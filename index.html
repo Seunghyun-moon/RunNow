@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>런나우 - 전국 마라톤 대회 정보</title>
-    <meta name="description" content="전국 마라톤 대회 일정, 코스, 접수 정보 등 최신 마라톤 정보를 한눈에 확인하세요.">
+    <title>전국 마라톤 일정, 대회 정보 - 런나우</title>
+    <meta name="description" content="2025 전국 마라톤 대회 일정, 접수, 코스, 지역별 마라톤 정보를 한눈에! 최신 마라톤일정, 마라톤대회, 러닝 정보는 런나우에서 확인하세요.">
     <meta name="keywords" content="마라톤, 전국 마라톤, 마라톤 대회, 마라톤 일정, 런나우, RunNow, 마라톤 접수, 러닝, 마라톤 코스">
     <meta name="author" content="런나우 RunNow">
-    <link rel="canonical" href="https://your-domain.com/">
+    <link rel="canonical" href="https://seunghyun-moon.github.io/RunNow/">
     <!-- Open Graph -->
     <meta property="og:title" content="런나우 - 전국 마라톤 대회 정보">
     <meta property="og:description" content="전국 마라톤 대회 일정, 코스, 접수 정보 등 최신 마라톤 정보를 한눈에 확인하세요.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-domain.com/">
+    <meta property="og:url" content="https://seunghyun-moon.github.io/RunNow/">
     <meta property="og:image" content="https://your-domain.com/og-image.png">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -22,9 +22,19 @@
     <!-- favicon 등 추가 가능 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css"><!-- 추가: 분리된 CSS 파일 -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-697QL78SCS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-697QL78SCS');
+    </script>
 </head>
 <body>
     <header>
+      <h1 class="visually-hidden">2025 전국 마라톤 일정, 대회 정보 - 런나우</h1>
       <h4><strong>Run Now</strong> 🏃‍♂️ 2025 마라톤</h4>
     </header>
 
@@ -56,6 +66,12 @@
       </div>
 
     </div>
+
+    <div id="marathon-list-loader" class="w-100 d-flex justify-content-center align-items-center py-5" style="display:none;">
+      <div class="spinner-border text-primary" role="status" style="width:2.5rem; height:2.5rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
     <div id="marathon-list"></div>
 
 
@@ -71,6 +87,9 @@ const csvUrl = 'https://docs.google.com/spreadsheets/d/1z67BXtYTMB0PySBjvTMz_IOi
 const metroRegions = ['서울', '경기', '인천'];
 
 let allCards = [];
+
+$('#marathon-list').hide();
+$('#marathon-list-loader').show();
 
 Papa.parse(csvUrl, {
   download: true,
@@ -306,6 +325,31 @@ Papa.parse(csvUrl, {
         `);
     });
 
+    // 지역/코스 필터의 선택값을 localStorage에 저장하고, 페이지 로드 시 복원
+
+    // 1. 필터 선택 시 localStorage에 저장
+    $(document).on('click', '.region-filter-item', function() {
+        const region = $(this).data('region');
+        localStorage.setItem('selectedRegion', region);
+    });
+    $(document).on('click', '.course-filter-item', function() {
+        const course = $(this).data('course');
+        localStorage.setItem('selectedCourse', course);
+    });
+
+    // 2. 페이지 로드 시 localStorage에서 값 읽어와 필터 적용
+    $(document).ready(function() {
+        const savedRegion = localStorage.getItem('selectedRegion');
+        const savedCourse = localStorage.getItem('selectedCourse');
+        if (savedRegion) {
+            // 트리거: 해당 지역 필터 클릭 이벤트 발생시킴
+            $(`.region-filter-item[data-region="${savedRegion}"]`).trigger('click');
+        }
+        if (savedCourse) {
+            $(`.course-filter-item[data-course="${savedCourse}"]`).trigger('click');
+        }
+    });
+
     // 지역 필터 드롭다운 이벤트
     $(document).on('click', '.region-filter-item', function(e) {
         e.preventDefault();
@@ -435,7 +479,8 @@ Papa.parse(csvUrl, {
         for (let i = 0; i < name.length; i++) sum += name.charCodeAt(i);
         return classes[sum % classes.length];
     }
-
+    $('#marathon-list').show();
+    $('#marathon-list-loader').remove();
   }
 });
 
