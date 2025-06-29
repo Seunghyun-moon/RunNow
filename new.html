@@ -79,14 +79,20 @@
         };
 
         // GAS 웹 앱 URL로 POST 요청
-        fetch('https://script.google.com/macros/s/AKfycbzgRwo77vtdsdrAcERX-ShFwHy_YxqVfDczuDViNMP4HigoyVXM28zCwh1KGGd29gHg/exec', { // GAS 웹 앱 URL 입력
+        fetch('https://script.google.com/macros/s/AKfycbzQ2xAXf3yVenIgaKuUMME-6bANxXWoOB-rf8DW8rKRFigmSDZ_GMgDda6eJBlsjk0W/exec', { // GAS 웹 앱 URL 입력
           method: 'POST',
+          mode: 'cors', // CORS 모드 명시
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then(result => {
           if (result.status === 'success') {
             document.getElementById('message').innerText = result.message;
