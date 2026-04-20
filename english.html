@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Speaking Practice · 영어 말하기 연습</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Copse&family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--md-sys-color-surface-container-low);
+      font-family: var(--md-font-body);
+      color: var(--md-sys-color-on-surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px 140px;
+    }
+
+    /* ── Header ── */
+    .app-header {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .app-title {
+      font-family: var(--md-font-display);
+      font-size: var(--md-typescale-title-large-size);
+    }
+    .sentence-counter {
+      font-size: var(--md-typescale-label-large-size);
+      color: var(--md-sys-color-on-surface-variant);
+      font-weight: 500;
+    }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      width: 100%;
+      max-width: 600px;
+      height: 6px;
+      background-color: var(--md-sys-color-surface-container-high);
+      border-radius: var(--md-shape-full);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background-color: var(--md-sys-color-primary);
+      border-radius: var(--md-shape-full);
+      transition: width 0.5s ease;
+    }
+
+    /* ── Level chips ── */
+    .level-chips {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .level-chip {
+      padding: 5px 18px;
+      border-radius: var(--md-shape-full);
+      font-size: var(--md-typescale-label-medium-size);
+      font-weight: 500;
+      border: 1.5px solid var(--md-sys-color-outline-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .level-chip.active {
+      background-color: var(--md-sys-color-primary);
+      border-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+    }
+    .level-chip.done {
+      background-color: var(--md-sys-color-primary-container);
+      border-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      cursor: pointer;
+    }
+    .level-chip.done:hover {
+      opacity: .75;
+    }
+
+    /* ── Sentence card ── */
+    .sentence-card {
+      width: 100%;
+      max-width: 600px;
+      background-color: var(--md-sys-color-surface-container-lowest);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--md-shape-large);
+      padding: 36px 28px 28px;
+      margin-bottom: 8px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    /* ── 읽어주기 button (icon only) ── */
+    .read-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--md-shape-full);
+      background: transparent;
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .read-btn .material-icons-round { font-size: 24px; }
+    .read-btn:hover {
+      background-color: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface);
+    }
+    .read-btn.speaking {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    /* ── Mic FAB (fixed bottom) ── */
+    .mic-fab-wrap {
+      position: fixed;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 200;
+    }
+
+    .sentence-display {
+      font-family: var(--md-font-display);
+      font-size: 1.6rem;
+      line-height: 2.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+    }
+    .word-visible {
+      color: var(--md-sys-color-on-surface);
+    }
+    .word-blank {
+      display: inline-block;
+      height: 1.7rem;
+      min-width: 2.4rem;
+      background-color: var(--md-sys-color-surface-container);
+      border-bottom: 2.5px solid var(--md-sys-color-primary);
+      border-radius: 2px;
+      vertical-align: middle;
+    }
+
+    .translation {
+      font-size: var(--md-typescale-body-medium-size);
+      color: var(--md-sys-color-on-surface-variant);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ── Result ── */
+    .result-area {
+      width: 100%;
+      max-width: 600px;
+      min-height: 52px;
+      text-align: center;
+      font-size: var(--md-typescale-body-medium-size);
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .result-heard   { color: var(--md-sys-color-on-surface); font-style: italic; }
+    .result-error   { color: var(--md-sys-color-error); margin-top: 4px; }
+    .result-success { color: var(--md-sys-color-secondary); font-weight: 600; }
+
+    /* ── Mic button ── */
+    .mic-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: none;
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--md-elevation-3);
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+    }
+    .mic-btn .material-icons-round { font-size: 32px; }
+    .mic-btn:hover  { transform: scale(1.06); box-shadow: var(--md-elevation-4); }
+    .mic-btn:active { transform: scale(0.94); }
+    .mic-btn.listening {
+      background-color: #E53935;
+      color: #fff;
+      animation: micPulse 1.2s ease-in-out infinite;
+    }
+    @keyframes micPulse {
+      0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(229,57,53,.4); }
+      50%       { transform: scale(1.07); box-shadow: 0 0 0 16px rgba(229,57,53,0); }
+    }
+    .mic-label {
+      font-size: var(--md-typescale-label-small-size);
+      color: var(--md-sys-color-on-surface-variant);
+      white-space: nowrap;
+    }
+
+    /* ── Celebration overlay ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+
+    .cel-card {
+      background: var(--md-sys-color-surface-container-lowest);
+      border-radius: var(--md-shape-extra-large);
+      padding: 48px 40px 36px;
+      text-align: center;
+      max-width: 360px;
+      width: 90%;
+      animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(.55); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .cel-emoji { font-size: 3.5rem; margin-bottom: 14px; }
+    .cel-title {
+      font-family: var(--md-font-display);
+      font-size: var(--md-typescale-headline-small-size);
+      color: var(--md-sys-color-on-surface);
+      margin-bottom: 8px;
+    }
+    .cel-sub {
+      font-size: var(--md-typescale-body-medium-size);
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .btn-primary-m3 {
+      padding: 12px 32px;
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border: none;
+      border-radius: var(--md-shape-full);
+      font-family: var(--md-font-body);
+      font-size: var(--md-typescale-label-large-size);
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn-primary-m3:hover { opacity: .88; }
+
+    /* ── Complete screen ── */
+    #completeScreen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+      padding: 48px 24px;
+      max-width: 480px;
+    }
+    #completeScreen.show { display: flex; }
+
+    /* ── Loading ── */
+    #loadingScreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-top: 80px;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--md-sys-color-surface-container-high);
+      border-top-color: var(--md-sys-color-primary);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 480px) {
+      .sentence-display { font-size: 1.3rem; line-height: 2rem; }
+      .sentence-card    { padding: 28px 18px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loadingScreen">
+  <div class="spinner"></div>
+  <span>불러오는 중...</span>
+</div>
+
+<!-- Main app -->
+<div id="app" style="display:none; width:100%; max-width:600px; display:none; flex-direction:column; align-items:center;">
+  <header class="app-header">
+    <span class="app-title">Speaking Practice</span>
+    <span class="sentence-counter" id="counter">1 / 10</span>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-fill" id="progressBar" style="width:0%"></div>
+  </div>
+
+  <div class="level-chips" id="levelChips">
+    <span class="level-chip" data-level="1">Level 1</span>
+    <span class="level-chip" data-level="2">Level 2</span>
+    <span class="level-chip" data-level="3">Level 3</span>
+  </div>
+
+  <div class="sentence-card">
+    <div class="sentence-display" id="sentenceDisplay"></div>
+    <div class="translation" id="translationText"></div>
+  </div>
+
+  <button class="read-btn" id="readBtn" aria-label="읽어주기">
+    <span class="material-icons-round">volume_up</span>
+  </button>
+
+  <div class="result-area" id="resultArea"></div>
+</div>
+
+<!-- Fixed bottom mic FAB -->
+<div class="mic-fab-wrap">
+  <button class="mic-btn" id="micBtn" aria-label="말하기">
+    <span class="material-icons-round" id="micIcon">mic</span>
+  </button>
+  <span class="mic-label" id="micLabel">클릭하여 말하기</span>
+</div>
+
+<!-- Complete screen -->
+<div id="completeScreen">
+  <div style="font-size:4rem">🏆</div>
+  <h2 style="font-family:var(--md-font-display);color:var(--md-sys-color-on-surface)">모든 문장 완료!</h2>
+  <p style="color:var(--md-sys-color-on-surface-variant)">10개 문장을 모두 마스터했어요. 대단해요!</p>
+  <button class="btn-primary-m3" onclick="restartApp()">처음부터 다시 시작</button>
+</div>
+
+<!-- Celebration overlay -->
+<div class="overlay" id="overlay">
+  <div class="cel-card">
+    <div class="cel-emoji" id="celEmoji"></div>
+    <div class="cel-title" id="celTitle"></div>
+    <div class="cel-sub"   id="celSub"></div>
+    <button class="btn-primary-m3" id="celBtn" onclick="onCelebNext()"></button>
+  </div>
+</div>
+
+<script>
+// ── State ────────────────────────────────────────────────────────
+let sentences = [];
+let idx   = 0;
+let level = 1;
+let isListening = false;
+let celebNext = null;
+
+// ── Load data ────────────────────────────────────────────────────
+fetch('./sentences.json')
+  .then(r => r.json())
+  .then(data => {
+    sentences = data;
+    document.getElementById('loadingScreen').style.display = 'none';
+    const app = document.getElementById('app');
+    app.style.display = 'flex';
+    initSpeech();
+    render();
+  })
+  .catch(() => {
+    document.getElementById('loadingScreen').innerHTML =
+      '<span style="color:var(--md-sys-color-error)">sentences.json 파일을 불러올 수 없습니다.</span>';
+  });
+
+// ── Speech Recognition ───────────────────────────────────────────
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null;
+
+function initSpeech() {
+  if (!SR) {
+    document.getElementById('micBtn').disabled = true;
+    document.getElementById('micLabel').textContent = '이 브라우저는 음성 인식을 지원하지 않습니다';
+    return;
+  }
+  rec = new SR();
+  rec.lang = 'en-US';
+  rec.interimResults = false;
+  rec.maxAlternatives = 5;
+
+  rec.onresult = e => {
+    const alts = Array.from(e.results[0]).map(r => r.transcript);
+    handleResult(alts);
+  };
+  rec.onerror = e => {
+    setListening(false);
+    if (e.error === 'no-speech') {
+      showResult('<span class="result-error">음성이 감지되지 않았습니다. 다시 시도해주세요.</span>');
+    } else if (e.error !== 'aborted') {
+      showResult(`<span class="result-error">마이크 오류: ${e.error}</span>`);
+    }
+  };
+  rec.onend = () => setListening(false);
+}
+
+// ── Helpers ──────────────────────────────────────────────────────
+function normalize(t) {
+  return t.toLowerCase().replace(/[.,!?;:'"()\-]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function setListening(val) {
+  isListening = val;
+  document.getElementById('micBtn').classList.toggle('listening', val);
+  document.getElementById('micIcon').textContent = val ? 'stop' : 'mic';
+  document.getElementById('micLabel').textContent = val ? '듣는 중... 말해주세요' : '클릭하여 말하기';
+}
+
+function showResult(html) {
+  document.getElementById('resultArea').innerHTML = html;
+}
+
+// ── Render ───────────────────────────────────────────────────────
+function render() {
+  const { sentence, translation, hiddenIndices } = sentences[idx];
+  const words = sentence.split(' ');
+
+  // Sentence words
+  const display = document.getElementById('sentenceDisplay');
+  display.innerHTML = '';
+  words.forEach((word, i) => {
+    const span = document.createElement('span');
+    const hidden = level === 3 || (level === 2 && hiddenIndices.includes(i));
+    if (hidden) {
+      span.className = 'word-blank';
+      const len = word.replace(/[.,!?]/g, '').length;
+      span.style.minWidth = Math.max(2.2, len * 0.68) + 'rem';
+    } else {
+      span.className = 'word-visible';
+      span.textContent = word;
+    }
+    display.appendChild(span);
+  });
+
+  document.getElementById('translationText').textContent = translation;
+  document.getElementById('counter').textContent = `${idx + 1} / ${sentences.length}`;
+
+  // Progress bar
+  const totalSteps = sentences.length * 3;
+  const doneSteps  = idx * 3 + (level - 1);
+  document.getElementById('progressBar').style.width = (doneSteps / totalSteps * 100) + '%';
+
+  // Level chips
+  document.querySelectorAll('.level-chip').forEach(chip => {
+    const l = +chip.dataset.level;
+    chip.classList.toggle('active', l === level);
+    chip.classList.toggle('done',   l < level);
+  });
+
+  showResult('');
+}
+
+// ── Speech result ────────────────────────────────────────────────
+function handleResult(alts) {
+  const target  = normalize(sentences[idx].sentence);
+  const matched = alts.some(t => normalize(t) === target);
+
+  if (matched) {
+    onCorrect();
+  } else {
+    showResult(
+      `<div>들린 내용: <span class="result-heard">"${alts[0]}"</span></div>` +
+      `<div class="result-error">다시 시도해보세요 🙂</div>`
+    );
+  }
+}
+
+function onCorrect() {
+  if (level < 3) {
+    showResult('<span class="result-success">✅ 정확해요! 다음 레벨 →</span>');
+    setTimeout(() => { level++; render(); }, 900);
+  } else {
+    showResult('<span class="result-success">✅ 완벽해요!</span>');
+    showCelebration();
+  }
+}
+
+// ── Celebration ──────────────────────────────────────────────────
+function showCelebration() {
+  const isLast = idx === sentences.length - 1;
+  document.getElementById('celEmoji').textContent = isLast ? '🏆' : '🎉';
+  document.getElementById('celTitle').textContent = isLast ? '전부 완료!' : '훌륭해요!';
+  document.getElementById('celSub').textContent = isLast
+    ? '10개 문장을 모두 마스터했어요!'
+    : `"${sentences[idx].sentence}"\n완벽하게 외웠어요!`;
+  document.getElementById('celBtn').textContent = isLast ? '완료 🏆' : '다음 문장 →';
+  celebNext = isLast ? 'complete' : 'next';
+  document.getElementById('overlay').classList.add('show');
+}
+
+function onCelebNext() {
+  document.getElementById('overlay').classList.remove('show');
+  if (celebNext === 'complete') {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('completeScreen').classList.add('show');
+  } else {
+    idx++;
+    level = 1;
+    render();
+  }
+}
+
+function restartApp() {
+  idx = 0; level = 1;
+  document.getElementById('completeScreen').classList.remove('show');
+  document.getElementById('app').style.display = 'flex';
+  render();
+}
+
+// ── Level chip navigation ─────────────────────────────────────────
+document.getElementById('levelChips').addEventListener('click', e => {
+  const chip = e.target.closest('.level-chip');
+  if (!chip) return;
+  const target = +chip.dataset.level;
+  if (target < level) {
+    if (isListening) { rec.stop(); }
+    level = target;
+    render();
+  }
+});
+
+// ── Read aloud ────────────────────────────────────────────────────
+function speakSentence() {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('readBtn');
+  const utter = new SpeechSynthesisUtterance(sentences[idx].sentence);
+  utter.lang = 'en-US';
+  utter.rate = 0.88;
+  utter.onstart = () => btn.classList.add('speaking');
+  utter.onend   = () => btn.classList.remove('speaking');
+  utter.onerror = () => btn.classList.remove('speaking');
+  speechSynthesis.speak(utter);
+}
+
+document.getElementById('readBtn').addEventListener('click', speakSentence);
+
+// ── Mic button ───────────────────────────────────────────────────
+document.getElementById('micBtn').addEventListener('click', () => {
+  if (!rec) return;
+  if (isListening) {
+    rec.stop();
+  } else {
+    showResult('<span style="color:var(--md-sys-color-on-surface-variant)">듣는 중... 말해주세요</span>');
+    setListening(true);
+    try { rec.start(); } catch { setListening(false); }
+  }
+});
+</script>
+</body>
+</html>

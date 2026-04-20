@@ -1,61 +1,63 @@
-@import url('https://fonts.googleapis.com/css2?family=Grandiflora+One&display=swap');
-
-
-.grandiflora-one-regular {
-  font-family: "Grandiflora One", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
-
 body {
-    --bs-bg-opacity: 1;
-    background-color: #eee;
-    margin: 0px;
+    background-color: var(--md-sys-color-surface-container-low);
+    margin: 0;
     font-size: 0.95rem;
+    font-family: var(--md-font-body);
+    color: var(--md-sys-color-on-surface);
 }
+
 h4 {
     padding: 16px;
+    font-family: var(--md-font-display);
     strong {
-        font-weight: 900;
+        font-weight: 700;
     }
 }
+
 header {
-        & ~ div {
+    & ~ div {
         max-width: 720px;
         margin: 0 auto;
         padding: 0 16px 16px;
     }
 }
+
 .filter {
     position: sticky;
     top: 0;
     z-index: 100;
     padding: 8px 16px;
-    background-color: #eee !important;
+    background-color: var(--md-sys-color-surface-container-low) !important;
 }
+
 .marathon-card {
     border-left: 0 !important;
     border-right: 0 !important;
     border-top: none !important;
     box-shadow: none !important;
     margin-bottom: 1px !important;
+    background-color: var(--md-sys-color-surface-container-lowest);
+    border-color: var(--md-sys-color-outline-variant) !important;
     &:hover {
-        background-color: #f8f9fa !important;
+        background-color: var(--md-sys-color-surface-container-low) !important;
     }
 }
+
 .marathon-card h5 {
     font-size: 1.02rem;
 }
+
 .marathon-card .small, .marathon-card .badge {
     font-size: 0.90em;
 }
+
 .status .badge {
-  font-size: 0.78em;
-  font-weight: 400;
-  padding: 0.32em 0.7em;
-  border-radius: 1em;
+    font-size: 0.78em;
+    font-weight: 500;
+    padding: 0.32em 0.7em;
+    border-radius: var(--md-shape-full);
 }
-/* 날짜 박스 고정 크기 */
+
 .date-box {
     width: 70px;
     height: 70px;
@@ -64,33 +66,31 @@ header {
     max-width: 70px;
     max-height: 70px;
 }
+
 .course-tags {
     position: relative;
     left: -3px;
     .badge {
-    font-size: 0.78em;
-    font-weight: 400;
-    padding: 0.22em 0.5em;
-    border-radius: 1em;
-    margin-right: 2px;
-    margin-bottom: 2px;
-    border: 1px solid #eee;
+        font-size: 0.78em;
+        font-weight: 400;
+        padding: 0.22em 0.5em;
+        border-radius: var(--md-shape-full);
+        margin-right: 2px;
+        margin-bottom: 2px;
+        border: 1px solid var(--md-sys-color-outline-variant);
     }
 }
+
 a.link {
-        color: #6279EB;
-        text-decoration: none;
+    color: var(--md-sys-color-primary);
+    text-decoration: none;
 }
 
-/* 아바타 4색상 */
-.avatar-color-periwinkle { background: #6279EB !important; color: #fff; }
-.avatar-color-ladypink   { background: #F3CCD9 !important; color: #EF744A; }
-.avatar-color-coral      { background: #EF744A !important; color: #fff; }
-.avatar-color-whisperblue{ background: #B2DBF7 !important; color: #6279EB; }
-/* .avatar {
-    font-family: "Grandiflora One", cursive;
-    font-weight: 400;
-} */
+/* 아바타 4색상 — M3 tonal palette 기반 */
+.avatar-color-periwinkle  { background: var(--md-sys-color-primary-container) !important;   color: var(--md-sys-color-on-primary-container); }
+.avatar-color-ladypink    { background: var(--md-sys-color-tertiary-container) !important;   color: var(--md-sys-color-on-tertiary-container); }
+.avatar-color-coral       { background: var(--md-sys-color-error-container) !important;      color: var(--md-sys-color-on-error-container); }
+.avatar-color-whisperblue { background: var(--md-sys-color-secondary-container) !important;  color: var(--md-sys-color-on-secondary-container); }
 
 #regionDropdownMenu {
     max-height: 80vh !important;
@@ -102,20 +102,15 @@ a.link {
         margin: 0;
         font-size: 0.89rem;
     }
-    #marathon-list {
-    }
     .filter {
         padding: 16px;
     }
-    /* 모바일에서 카드 간격 제거 및 라인 구분 */
-
-    /* 마지막 카드의 하단 라인 제거 */
     #marathon-list .marathon-card:last-child {
         border-bottom: none !important;
     }
 }
 
-/* 지난대회보기 토글스위치 다크 스타일 - on/off 대비 명확, 내부 원 정렬 개선 */
+/* 지난대회보기 토글스위치 */
 .form-check.form-switch {
     margin-left: auto;
     display: flex;
@@ -127,26 +122,26 @@ a.link {
     height: 1.2em;
     min-width: 2.2em;
     min-height: 1.2em;
-    background-color: #e0e0e0 !important;   /* OFF 상태: 밝은 회색 */
-    border-color: #bdbdbd !important;
+    background-color: var(--md-sys-color-surface-variant) !important;
+    border-color: var(--md-sys-color-outline) !important;
     box-shadow: none;
     transition: background 0.2s, border-color 0.2s;
     position: relative;
     padding: 0;
     margin: 0;
     background-image: none;
-    border-radius: 1.2em;
+    border-radius: var(--md-shape-full);
     vertical-align: middle;
     outline: none;
 }
 
 .form-check.form-switch .form-check-input:checked {
-    background-color: #181818 !important;   /* ON 상태: 진한 검정 */
-    border-color: #181818 !important;
+    background-color: var(--md-sys-color-primary) !important;
+    border-color: var(--md-sys-color-primary) !important;
 }
 
 .form-check.form-switch .form-check-input:focus {
-    box-shadow: 0 0 0 0.15rem rgba(24,24,24,0.15) !important;
+    box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--md-sys-color-primary) 25%, transparent) !important;
 }
 
 .form-check.form-switch .form-check-input:after {
@@ -154,46 +149,46 @@ a.link {
     display: block;
     width: 1em;
     height: 1em;
-    background: #fff;
+    background: var(--md-sys-color-on-surface-variant);
     border-radius: 50%;
     position: absolute;
-    top: 0.03em;      /* 위아래 균형 맞춤 */
-    left: 0.03em;    /* OFF 상태: 왼쪽 */
+    top: 0.03em;
+    left: 0.03em;
     transition: left 0.2s, background 0.2s;
     box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-    border: 1.5px solid #bdbdbd;
+    border: 1.5px solid var(--md-sys-color-outline);
 }
 
 .form-check.form-switch .form-check-input:checked:after {
-    left: 1.07em;    /* ON 상태: 오른쪽 */
-    border: 1.5px solid #181818;
+    left: 1.07em;
+    background: var(--md-sys-color-on-primary);
+    border: 1.5px solid var(--md-sys-color-primary);
 }
 
 .form-check.form-switch .form-check-input {
-    /* 내부 원이 수직 가운데 오도록 line-height 조정 */
     line-height: 1.2em;
 }
 
 /* 접수상태 outline 스타일 */
 .badge.status-outline {
-    background: #fff !important;
-    border: 1.5px solid #181818 !important;
-    color: #181818 !important;
+    background: var(--md-sys-color-surface-container-lowest) !important;
+    border: 1.5px solid var(--md-sys-color-on-surface) !important;
+    color: var(--md-sys-color-on-surface) !important;
     font-weight: 500;
 }
 .badge.status-outline.info {
-    border-color: #0dcaf0 !important;
-    color: #0dcaf0 !important;
+    border-color: var(--md-sys-color-tertiary) !important;
+    color: var(--md-sys-color-tertiary) !important;
 }
 .badge.status-outline.success {
-    border-color: #198754 !important;
-    color: #198754 !important;
+    border-color: var(--md-sys-color-secondary) !important;
+    color: var(--md-sys-color-secondary) !important;
 }
 .badge.status-outline.warning {
-    border-color: #ff9007 !important;
-    color: #ff9007 !important;
+    border-color: color-mix(in srgb, var(--md-sys-color-primary) 80%, var(--md-sys-color-tertiary)) !important;
+    color: var(--md-sys-color-primary) !important;
 }
 .badge.status-outline.light {
-    border-color: #bdbdbd !important;
-    color: #888 !important;
+    border-color: var(--md-sys-color-outline) !important;
+    color: var(--md-sys-color-on-surface-variant) !important;
 }
