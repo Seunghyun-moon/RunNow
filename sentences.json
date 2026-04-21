@@ -1,52 +1,167 @@
 [
   {
-    "sentence": "The early bird catches the worm.",
-    "translation": "일찍 일어나는 새가 벌레를 잡는다.",
-    "hiddenIndices": [2, 4]
+    "category": "속담",
+    "sentences": [
+      {
+        "sentence": "The early bird catches the worm.",
+        "translation": "일찍 일어나는 새가 벌레를 잡는다.",
+        "hiddenIndices": [2, 4]
+      },
+      {
+        "sentence": "Actions speak louder than words.",
+        "translation": "행동은 말보다 크게 말한다.",
+        "hiddenIndices": [1, 3]
+      },
+      {
+        "sentence": "Every cloud has a silver lining.",
+        "translation": "모든 구름에는 은빛 테두리가 있다. (나쁜 일에도 좋은 면이 있다)",
+        "hiddenIndices": [1, 4]
+      },
+      {
+        "sentence": "Time flies when you are having fun.",
+        "translation": "즐거울 때는 시간이 빨리 간다.",
+        "hiddenIndices": [1, 4, 6]
+      },
+      {
+        "sentence": "Where there is a will there is a way.",
+        "translation": "뜻이 있는 곳에 길이 있다.",
+        "hiddenIndices": [2, 5, 7]
+      },
+      {
+        "sentence": "You only live once, so make it count.",
+        "translation": "인생은 한 번뿐, 의미있게 살아라.",
+        "hiddenIndices": [2, 5]
+      },
+      {
+        "sentence": "In the middle of difficulty lies opportunity.",
+        "translation": "어려움 속에 기회가 있다.",
+        "hiddenIndices": [2, 4]
+      },
+      {
+        "sentence": "Knowledge is power when you put it into action.",
+        "translation": "지식은 실행으로 옮길 때 힘이 된다.",
+        "hiddenIndices": [2, 5, 8]
+      },
+      {
+        "sentence": "A journey of a thousand miles begins with a single step.",
+        "translation": "천 리 길도 한 걸음부터.",
+        "hiddenIndices": [1, 4, 7]
+      },
+      {
+        "sentence": "Success is not final, failure is not fatal.",
+        "translation": "성공은 끝이 아니고, 실패는 치명적이지 않다.",
+        "hiddenIndices": [3, 6]
+      }
+    ]
   },
   {
-    "sentence": "Actions speak louder than words.",
-    "translation": "행동은 말보다 크게 말한다.",
-    "hiddenIndices": [1, 3]
+    "category": "시사",
+    "sentences": [
+      {
+        "sentence": "Inflation is easing, but the cost of living still feels high.",
+        "translation": "물가는 안정되고 있지만 체감 생활비는 여전히 높다.",
+        "hiddenIndices": [2, 5, 9]
+      },
+      {
+        "sentence": "AI is transforming industries faster than regulations can keep up.",
+        "translation": "AI가 규제보다 더 빠르게 산업을 바꾸고 있다.",
+        "hiddenIndices": [2, 5, 8]
+      },
+      {
+        "sentence": "Many companies are cutting costs due to economic uncertainty.",
+        "translation": "경제 불확실성 때문에 기업들이 비용 절감을 하고 있다.",
+        "hiddenIndices": [2, 5]
+      },
+      {
+        "sentence": "Remote work is becoming a standard rather than an exception.",
+        "translation": "재택근무는 이제 예외가 아니라 표준이 되고 있다.",
+        "hiddenIndices": [1, 4, 7]
+      },
+      {
+        "sentence": "Climate change is no longer a future threat—it's happening now.",
+        "translation": "기후변화는 미래의 문제가 아니라 현재 진행형이다.",
+        "hiddenIndices": [2, 6, 9]
+      },
+      {
+        "sentence": "Interest rates are expected to remain high for the foreseeable future.",
+        "translation": "금리는 당분간 높은 수준을 유지할 것으로 예상된다.",
+        "hiddenIndices": [1, 4, 8]
+      },
+      {
+        "sentence": "There is growing concern about data privacy and security.",
+        "translation": "데이터 개인정보 보호에 대한 우려가 커지고 있다.",
+        "hiddenIndices": [2, 5]
+      },
+      {
+        "sentence": "Global supply chains are still recovering from recent disruptions.",
+        "translation": "글로벌 공급망이 최근 혼란에서 아직 회복 중이다.",
+        "hiddenIndices": [1, 4, 7]
+      },
+      {
+        "sentence": "People are becoming more cautious with their spending.",
+        "translation": "사람들이 소비에 더 신중해지고 있다.",
+        "hiddenIndices": [2, 4]
+      },
+      {
+        "sentence": "Governments are under pressure to address rising housing prices.",
+        "translation": "정부는 상승하는 집값 문제 해결 압박을 받고 있다.",
+        "hiddenIndices": [1, 4, 7]
+      }
+    ]
   },
   {
-    "sentence": "Every cloud has a silver lining.",
-    "translation": "모든 구름에는 은빛 테두리가 있다. (나쁜 일에도 좋은 면이 있다)",
-    "hiddenIndices": [1, 4]
-  },
-  {
-    "sentence": "Time flies when you are having fun.",
-    "translation": "즐거울 때는 시간이 빨리 간다.",
-    "hiddenIndices": [1, 4, 6]
-  },
-  {
-    "sentence": "Where there is a will there is a way.",
-    "translation": "뜻이 있는 곳에 길이 있다.",
-    "hiddenIndices": [2, 5, 7]
-  },
-  {
-    "sentence": "You only live once, so make it count.",
-    "translation": "인생은 한 번뿐, 의미있게 살아라.",
-    "hiddenIndices": [2, 5]
-  },
-  {
-    "sentence": "In the middle of difficulty lies opportunity.",
-    "translation": "어려움 속에 기회가 있다.",
-    "hiddenIndices": [2, 4]
-  },
-  {
-    "sentence": "Knowledge is power when you put it into action.",
-    "translation": "지식은 실행으로 옮길 때 힘이 된다.",
-    "hiddenIndices": [2, 5, 8]
-  },
-  {
-    "sentence": "A journey of a thousand miles begins with a single step.",
-    "translation": "천 리 길도 한 걸음부터.",
-    "hiddenIndices": [1, 4, 7]
-  },
-  {
-    "sentence": "Success is not final, failure is not fatal.",
-    "translation": "성공은 끝이 아니고, 실패는 치명적이지 않다.",
-    "hiddenIndices": [3, 6]
+    "category": "여행",
+    "sentences": [
+      {
+        "sentence": "Could you recommend a good local restaurant that's popular with locals?",
+        "translation": "현지 사람들이 자주 가는 괜찮은 맛집 추천해 주실 수 있나요?",
+        "hiddenIndices": [2, 5, 9]
+      },
+      {
+        "sentence": "How do I get to the nearest subway station from here?",
+        "translation": "여기서 가장 가까운 지하철역은 어떻게 가나요?",
+        "hiddenIndices": [1, 4, 7]
+      },
+      {
+        "sentence": "Is it within walking distance, or should I take a taxi?",
+        "translation": "걸어서 갈 수 있나요, 아니면 택시를 타야 하나요?",
+        "hiddenIndices": [2, 5, 8]
+      },
+      {
+        "sentence": "Hi, I'd like to check in. I made a reservation in advance.",
+        "translation": "안녕하세요, 체크인하려고 합니다. 미리 예약했어요.",
+        "hiddenIndices": [3, 7]
+      },
+      {
+        "sentence": "Do you have any rooms available for tonight, preferably with a nice view?",
+        "translation": "오늘 묵을 수 있는 방 있나요? 가능하면 전망 좋은 방으로요.",
+        "hiddenIndices": [3, 6, 10]
+      },
+      {
+        "sentence": "Would it be possible to leave my luggage here for a few hours?",
+        "translation": "몇 시간 동안 짐을 여기 맡길 수 있을까요?",
+        "hiddenIndices": [2, 5, 9]
+      },
+      {
+        "sentence": "How much is the entrance fee, and are there any discounts available?",
+        "translation": "입장료는 얼마인가요? 할인도 있나요?",
+        "hiddenIndices": [1, 4, 8]
+      },
+      {
+        "sentence": "Excuse me, could you take a picture of us with this phone?",
+        "translation": "실례지만 이 폰으로 사진 좀 찍어주시겠어요?",
+        "hiddenIndices": [2, 5, 8]
+      },
+      {
+        "sentence": "That looks great—I'll have the same thing, please.",
+        "translation": "그거 좋아 보이네요, 저도 같은 걸로 주세요.",
+        "hiddenIndices": [1, 4]
+      },
+      {
+        "sentence": "Can I pay by card, or do you only accept cash?",
+        "translation": "카드로 결제되나요, 아니면 현금만 가능한가요?",
+        "hiddenIndices": [2, 5, 8]
+      }
+    ]
   }
 ]

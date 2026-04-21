@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Speaking Practice · 영어 말하기 연습</title>
+  <title>Daily Speak · Practice English Every Day</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Copse&family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
@@ -36,16 +36,32 @@
       font-family: var(--md-font-display);
       font-size: var(--md-typescale-title-large-size);
     }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     .sentence-counter {
       font-size: var(--md-typescale-label-large-size);
       color: var(--md-sys-color-on-surface-variant);
       font-weight: 500;
     }
+    .icon-btn {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; border-radius: var(--md-shape-full);
+      background: transparent;
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .icon-btn:hover { background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface); }
+    .icon-btn.active { color: var(--md-sys-color-primary); }
+    .icon-btn .material-icons-round { font-size: 22px; }
 
     /* ── Progress ── */
     .progress-wrap {
-      width: 100%;
-      max-width: 600px;
+      width: 100%; max-width: 600px;
       height: 6px;
       background-color: var(--md-sys-color-surface-container-high);
       border-radius: var(--md-shape-full);
@@ -60,15 +76,11 @@
     }
 
     /* ── Level chips ── */
-    .level-chips {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
+    .level-chips { display: flex; gap: 8px; margin-bottom: 24px; }
     .level-chip {
-      padding: 5px 18px;
+      padding: 7px 20px;
       border-radius: var(--md-shape-full);
-      font-size: var(--md-typescale-label-medium-size);
+      font-size: 0.95rem;
       font-weight: 500;
       border: 1.5px solid var(--md-sys-color-outline-variant);
       color: var(--md-sys-color-on-surface-variant);
@@ -86,121 +98,81 @@
       color: var(--md-sys-color-on-primary-container);
       cursor: pointer;
     }
-    .level-chip.done:hover {
-      opacity: .75;
-    }
+    .level-chip.done:hover { opacity: .75; }
 
     /* ── Sentence card ── */
     .sentence-card {
-      width: 100%;
-      max-width: 600px;
+      width: 100%; max-width: 600px;
       background-color: var(--md-sys-color-surface-container-lowest);
       border: 1px solid var(--md-sys-color-outline-variant);
       border-radius: var(--md-shape-large);
       padding: 36px 28px 28px;
       margin-bottom: 8px;
       min-height: 160px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       gap: 18px;
     }
 
-    /* ── 읽어주기 button (icon only) ── */
+    /* ── Read button ── */
     .read-btn {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      border-radius: var(--md-shape-full);
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; border-radius: var(--md-shape-full);
       background: transparent;
       color: var(--md-sys-color-on-surface-variant);
-      cursor: pointer;
-      transition: background .15s, color .15s;
+      cursor: pointer; transition: background .15s, color .15s;
     }
     .read-btn .material-icons-round { font-size: 24px; }
-    .read-btn:hover {
-      background-color: var(--md-sys-color-surface-container-high);
-      color: var(--md-sys-color-on-surface);
-    }
-    .read-btn.speaking {
-      background-color: var(--md-sys-color-secondary-container);
-      color: var(--md-sys-color-on-secondary-container);
-    }
+    .read-btn:hover { background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface); }
+    .read-btn.speaking { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
 
-    /* ── Mic FAB (fixed bottom) ── */
-    .mic-fab-wrap {
-      position: fixed;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      z-index: 200;
-    }
-
+    /* ── Sentence display ── */
     .sentence-display {
       font-family: var(--md-font-display);
-      font-size: 1.6rem;
-      line-height: 2.4rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      align-items: center;
+      font-size: 1.95rem; line-height: 2.8rem;
+      display: flex; flex-wrap: wrap;
+      gap: 8px; justify-content: center; align-items: center;
     }
-    .word-visible {
-      color: var(--md-sys-color-on-surface);
-    }
+    .word-visible { color: var(--md-sys-color-on-surface); }
     .word-blank {
-      display: inline-block;
-      height: 1.7rem;
-      min-width: 2.4rem;
+      display: inline-block; height: 2rem; min-width: 2.8rem;
       background-color: var(--md-sys-color-surface-container);
       border-bottom: 2.5px solid var(--md-sys-color-primary);
-      border-radius: 2px;
-      vertical-align: middle;
+      border-radius: 2px; vertical-align: middle;
     }
-
     .translation {
-      font-size: var(--md-typescale-body-medium-size);
+      font-size: 1.05rem;
       color: var(--md-sys-color-on-surface-variant);
-      text-align: center;
-      line-height: 1.6;
+      text-align: center; line-height: 1.6;
     }
 
     /* ── Result ── */
     .result-area {
-      width: 100%;
-      max-width: 600px;
-      min-height: 52px;
+      width: 100%; max-width: 600px; min-height: 52px;
       text-align: center;
-      font-size: var(--md-typescale-body-medium-size);
+      font-size: 1.05rem;
       color: var(--md-sys-color-on-surface-variant);
-      margin-bottom: 24px;
-      line-height: 1.6;
+      margin-bottom: 24px; line-height: 1.6;
     }
     .result-heard   { color: var(--md-sys-color-on-surface); font-style: italic; }
     .result-error   { color: var(--md-sys-color-error); margin-top: 4px; }
     .result-success { color: var(--md-sys-color-secondary); font-weight: 600; }
 
-    /* ── Mic button ── */
+    /* ── Mic FAB ── */
+    .mic-fab-wrap {
+      position: fixed; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 8px; z-index: 200;
+    }
     .mic-btn {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
+      width: 72px; height: 72px; border-radius: 50%;
       border: none;
       background-color: var(--md-sys-color-primary);
       color: var(--md-sys-color-on-primary);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: var(--md-elevation-3);
       transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
     }
@@ -208,8 +180,7 @@
     .mic-btn:hover  { transform: scale(1.06); box-shadow: var(--md-elevation-4); }
     .mic-btn:active { transform: scale(0.94); }
     .mic-btn.listening {
-      background-color: #E53935;
-      color: #fff;
+      background-color: #E53935; color: #fff;
       animation: micPulse 1.2s ease-in-out infinite;
     }
     @keyframes micPulse {
@@ -217,33 +188,24 @@
       50%       { transform: scale(1.07); box-shadow: 0 0 0 16px rgba(229,57,53,0); }
     }
     .mic-label {
-      font-size: var(--md-typescale-label-small-size);
+      font-size: 0.9rem;
       color: var(--md-sys-color-on-surface-variant);
       white-space: nowrap;
     }
 
     /* ── Celebration overlay ── */
     .overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.25s;
     }
     .overlay.show { opacity: 1; pointer-events: all; }
-
     .cel-card {
       background: var(--md-sys-color-surface-container-lowest);
       border-radius: var(--md-shape-extra-large);
-      padding: 48px 40px 36px;
-      text-align: center;
-      max-width: 360px;
-      width: 90%;
+      padding: 48px 40px 36px; text-align: center;
+      max-width: 360px; width: 90%;
       animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
     }
     @keyframes popIn {
@@ -251,65 +213,145 @@
       to   { transform: scale(1);   opacity: 1; }
     }
     .cel-emoji { font-size: 3.5rem; margin-bottom: 14px; }
-    .cel-title {
-      font-family: var(--md-font-display);
-      font-size: var(--md-typescale-headline-small-size);
-      color: var(--md-sys-color-on-surface);
-      margin-bottom: 8px;
-    }
-    .cel-sub {
-      font-size: var(--md-typescale-body-medium-size);
-      color: var(--md-sys-color-on-surface-variant);
-      margin-bottom: 28px;
-      line-height: 1.5;
-    }
+    .cel-title { font-family: var(--md-font-display); font-size: var(--md-typescale-headline-small-size); color: var(--md-sys-color-on-surface); margin-bottom: 8px; }
+    .cel-sub   { font-size: 1.05rem; color: var(--md-sys-color-on-surface-variant); margin-bottom: 28px; line-height: 1.5; white-space: pre-line; }
     .btn-primary-m3 {
       padding: 12px 32px;
       background-color: var(--md-sys-color-primary);
       color: var(--md-sys-color-on-primary);
-      border: none;
-      border-radius: var(--md-shape-full);
+      border: none; border-radius: var(--md-shape-full);
       font-family: var(--md-font-body);
       font-size: var(--md-typescale-label-large-size);
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity .15s;
+      font-weight: 500; cursor: pointer; transition: opacity .15s;
     }
     .btn-primary-m3:hover { opacity: .88; }
+    .btn-tonal-m3 {
+      padding: 12px 32px;
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+      border: none; border-radius: var(--md-shape-full);
+      font-family: var(--md-font-body);
+      font-size: var(--md-typescale-label-large-size);
+      font-weight: 500; cursor: pointer; transition: opacity .15s;
+    }
+    .btn-tonal-m3:hover { opacity: .88; }
 
     /* ── Complete screen ── */
     #completeScreen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 16px;
-      padding: 48px 24px;
-      max-width: 480px;
+      display: none; flex-direction: column;
+      align-items: center; text-align: center;
+      gap: 16px; padding: 24px; max-width: 480px; width: 100%;
     }
     #completeScreen.show { display: flex; }
 
     /* ── Loading ── */
     #loadingScreen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      margin-top: 80px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 16px; margin-top: 80px;
       color: var(--md-sys-color-on-surface-variant);
     }
     .spinner {
       width: 40px; height: 40px;
       border: 3px solid var(--md-sys-color-surface-container-high);
       border-top-color: var(--md-sys-color-primary);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
+      border-radius: 50%; animation: spin .8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Calendar ── */
+    #calView {
+      display: none; flex-direction: column;
+      width: 100%; max-width: 600px; gap: 12px;
+    }
+    #calView.show { display: flex; }
+
+    .stats-row {
+      display: flex; gap: 10px; width: 100%;
+    }
+    .stat-card {
+      flex: 1;
+      background: var(--md-sys-color-surface-container-lowest);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--md-shape-large);
+      padding: 16px 8px; text-align: center;
+    }
+    .stat-num {
+      font-family: var(--md-font-display);
+      font-size: 2.1rem; font-weight: 600;
+      color: var(--md-sys-color-primary); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-top: 4px;
+    }
+
+    .cal-nav {
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .cal-month-label {
+      font-family: var(--md-font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .cal-nav-btn {
+      width: 36px; height: 36px;
+      border: none; background: transparent;
+      border-radius: var(--md-shape-full);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--md-sys-color-on-surface-variant);
+      transition: background .15s;
+    }
+    .cal-nav-btn:hover { background: var(--md-sys-color-surface-container-high); }
+    .cal-nav-btn .material-icons-round { font-size: 20px; }
+
+    .cal-weekdays {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--md-sys-color-on-surface-variant);
+      font-weight: 600;
+    }
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      border-radius: var(--md-shape-medium);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .cal-day.empty { visibility: hidden; }
+    .cal-day.future-day { color: var(--md-sys-color-outline-variant); }
+    .cal-day.today-cell {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: -2px;
+      font-weight: 700;
+      color: var(--md-sys-color-primary);
+    }
+    .cal-day.success-cell  { background: #C8E6C9; color: #1B5E20; }
+    .cal-day.partial-cell  { background: #FFE0B2; color: #BF360C; }
+    .cal-day.fail-cell     { background: #FFCDD2; color: #B71C1C; }
+
+    .cal-dot { font-size: 0.55rem; line-height: 1.2; }
+
+    .cal-legend {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot  { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
     @media (max-width: 480px) {
-      .sentence-display { font-size: 1.3rem; line-height: 2rem; }
+      .sentence-display { font-size: 1.55rem; line-height: 2.3rem; }
       .sentence-card    { padding: 28px 18px 20px; }
+      .cal-day          { font-size: 0.82rem; }
     }
   </style>
 </head>
@@ -318,16 +360,22 @@
 <!-- Loading -->
 <div id="loadingScreen">
   <div class="spinner"></div>
-  <span>불러오는 중...</span>
+  <span>Loading...</span>
 </div>
 
-<!-- Main app -->
-<div id="app" style="display:none; width:100%; max-width:600px; display:none; flex-direction:column; align-items:center;">
-  <header class="app-header">
-    <span class="app-title">Speaking Practice</span>
-    <span class="sentence-counter" id="counter">1 / 10</span>
-  </header>
+<!-- Persistent header -->
+<header class="app-header" id="appHeader" style="display:none">
+  <span class="app-title">Daily Speak</span>
+  <div class="header-right">
+    <button class="icon-btn" id="calBtn" aria-label="View calendar">
+      <span class="material-icons-round">calendar_month</span>
+    </button>
+    <span class="sentence-counter" id="counter" style="display:none">1 / 3</span>
+  </div>
+</header>
 
+<!-- Practice view -->
+<div id="app" style="display:none; width:100%; max-width:600px; flex-direction:column; align-items:center;">
   <div class="progress-wrap">
     <div class="progress-fill" id="progressBar" style="width:0%"></div>
   </div>
@@ -343,27 +391,53 @@
     <div class="translation" id="translationText"></div>
   </div>
 
-  <button class="read-btn" id="readBtn" aria-label="읽어주기">
+  <button class="read-btn" id="readBtn" aria-label="Read aloud">
     <span class="material-icons-round">volume_up</span>
   </button>
 
   <div class="result-area" id="resultArea"></div>
 </div>
 
-<!-- Fixed bottom mic FAB -->
-<div class="mic-fab-wrap">
-  <button class="mic-btn" id="micBtn" aria-label="말하기">
-    <span class="material-icons-round" id="micIcon">mic</span>
-  </button>
-  <span class="mic-label" id="micLabel">클릭하여 말하기</span>
+<!-- Calendar view -->
+<div id="calView">
+  <div class="stats-row" id="statsRow"></div>
+  <div class="cal-nav">
+    <button class="cal-nav-btn" id="prevMonthBtn">
+      <span class="material-icons-round">chevron_left</span>
+    </button>
+    <span class="cal-month-label" id="calMonthLabel"></span>
+    <button class="cal-nav-btn" id="nextMonthBtn">
+      <span class="material-icons-round">chevron_right</span>
+    </button>
+  </div>
+  <div class="cal-weekdays">
+    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+    <span>Thu</span><span>Fri</span><span>Sat</span>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+  <div class="cal-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#C8E6C9"></div><span>3/3 complete</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FFE0B2"></div><span>Partial</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FFCDD2"></div><span>Incomplete</span></div>
+  </div>
 </div>
 
-<!-- Complete screen -->
+<!-- Complete screen (today done) -->
 <div id="completeScreen">
   <div style="font-size:4rem">🏆</div>
-  <h2 style="font-family:var(--md-font-display);color:var(--md-sys-color-on-surface)">모든 문장 완료!</h2>
-  <p style="color:var(--md-sys-color-on-surface-variant)">10개 문장을 모두 마스터했어요. 대단해요!</p>
-  <button class="btn-primary-m3" onclick="restartApp()">처음부터 다시 시작</button>
+  <h2 style="font-family:var(--md-font-display);color:var(--md-sys-color-on-surface)">Today's Done!</h2>
+  <p style="color:var(--md-sys-color-on-surface-variant);line-height:1.7">
+    You've mastered all 3 sentences today!<br>See you tomorrow 👋
+  </p>
+  <button class="btn-primary-m3" id="completeCalBtn">View Calendar</button>
+</div>
+
+<!-- Mic FAB -->
+<div class="mic-fab-wrap" id="micWrap">
+  <button class="mic-btn" id="micBtn" aria-label="Speak">
+    <span class="material-icons-round" id="micIcon">mic</span>
+  </button>
+  <span class="mic-label" id="micLabel">Tap to speak</span>
 </div>
 
 <!-- Celebration overlay -->
@@ -377,90 +451,197 @@
 </div>
 
 <script>
-// ── State ────────────────────────────────────────────────────────
-let sentences = [];
-let idx   = 0;
-let level = 1;
-let isListening = false;
-let celebNext = null;
+// ── Constants ─────────────────────────────────────────────────────
+const CACHE_KEY = 'dailySpeak_v3';
+const HIST_KEY  = 'dailySpeak_hist_v3';
 
-// ── Load data ────────────────────────────────────────────────────
+// ── State ─────────────────────────────────────────────────────────
+let allSentences = [];
+let todayData    = null; // { date, sentences:[3], idx, level, completedCount }
+let history      = {};  // { "YYYY-MM-DD": { completed, total, success } }
+let isListening  = false;
+let celebNext    = null;
+let currentView  = 'practice';
+
+const now = new Date();
+let calYear  = now.getFullYear();
+let calMonth = now.getMonth();
+
+// ── Date helper ────────────────────────────────────────────────────
+function getDateStr(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ── Persistence ───────────────────────────────────────────────────
+function saveCache()   { localStorage.setItem(CACHE_KEY, JSON.stringify(todayData)); }
+function loadCache()   { try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch { return null; } }
+function saveHistory() { localStorage.setItem(HIST_KEY, JSON.stringify(history)); }
+function loadHistory() { try { return JSON.parse(localStorage.getItem(HIST_KEY)) || {}; } catch { return {}; } }
+
+// ── Shuffle ───────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── Day management ────────────────────────────────────────────────
+function finalizeDay(data) {
+  if (!data || !data.date || history[data.date]) return;
+  history[data.date] = {
+    completed: data.completedCount || 0,
+    total: 3,
+    success: (data.completedCount || 0) >= 3
+  };
+  saveHistory();
+}
+
+function startNewDay() {
+  todayData = {
+    date: getDateStr(),
+    sentences: shuffle(allSentences).slice(0, 3),
+    idx: 0, level: 1, completedCount: 0
+  };
+  saveCache();
+}
+
+// ── Init ──────────────────────────────────────────────────────────
 fetch('./sentences.json')
   .then(r => r.json())
   .then(data => {
-    sentences = data;
+    allSentences = data.flatMap(cat => cat.sentences || []);
+    history = loadHistory();
+
+    const cached = loadCache();
+    const today  = getDateStr();
+
+    if (cached && cached.date === today) {
+      todayData = cached;
+    } else {
+      if (cached && cached.date !== today) finalizeDay(cached);
+      startNewDay();
+    }
+
     document.getElementById('loadingScreen').style.display = 'none';
-    const app = document.getElementById('app');
-    app.style.display = 'flex';
-    initSpeech();
-    render();
+    document.getElementById('appHeader').style.display     = 'flex';
+
+    if (todayData.completedCount >= 3) {
+      finalizeDay(todayData);
+      showCompleteScreen();
+    } else {
+      showPracticeView();
+      initSpeech();
+      render();
+    }
   })
   .catch(() => {
     document.getElementById('loadingScreen').innerHTML =
-      '<span style="color:var(--md-sys-color-error)">sentences.json 파일을 불러올 수 없습니다.</span>';
+      '<span style="color:var(--md-sys-color-error)">Failed to load sentences.json.</span>';
   });
 
-// ── Speech Recognition ───────────────────────────────────────────
+// ── View switching ─────────────────────────────────────────────────
+function showPracticeView() {
+  currentView = 'practice';
+  document.getElementById('app').style.display           = 'flex';
+  document.getElementById('calView').classList.remove('show');
+  document.getElementById('completeScreen').classList.remove('show');
+  document.getElementById('micWrap').style.display       = '';
+  document.getElementById('counter').style.display       = '';
+  document.getElementById('calBtn').classList.remove('active');
+}
+
+function showCalendarView() {
+  currentView = 'calendar';
+  document.getElementById('app').style.display           = 'none';
+  document.getElementById('completeScreen').classList.remove('show');
+  document.getElementById('calView').classList.add('show');
+  document.getElementById('micWrap').style.display       = 'none';
+  document.getElementById('counter').style.display       = 'none';
+  document.getElementById('calBtn').classList.add('active');
+  calYear  = new Date().getFullYear();
+  calMonth = new Date().getMonth();
+  renderCalendar();
+}
+
+function showCompleteScreen() {
+  currentView = 'complete';
+  document.getElementById('app').style.display           = 'none';
+  document.getElementById('calView').classList.remove('show');
+  document.getElementById('completeScreen').classList.add('show');
+  document.getElementById('micWrap').style.display       = 'none';
+  document.getElementById('counter').style.display       = 'none';
+  document.getElementById('calBtn').classList.remove('active');
+}
+
+document.getElementById('calBtn').addEventListener('click', () => {
+  if (currentView === 'calendar') {
+    if (todayData.completedCount >= 3) showCompleteScreen();
+    else showPracticeView();
+  } else {
+    showCalendarView();
+  }
+});
+
+document.getElementById('completeCalBtn').addEventListener('click', showCalendarView);
+
+// ── Speech Recognition ────────────────────────────────────────────
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 let rec = null;
 
 function initSpeech() {
   if (!SR) {
     document.getElementById('micBtn').disabled = true;
-    document.getElementById('micLabel').textContent = '이 브라우저는 음성 인식을 지원하지 않습니다';
+    document.getElementById('micLabel').textContent = 'Speech recognition not supported';
     return;
   }
   rec = new SR();
   rec.lang = 'en-US';
   rec.interimResults = false;
   rec.maxAlternatives = 5;
-
-  rec.onresult = e => {
-    const alts = Array.from(e.results[0]).map(r => r.transcript);
-    handleResult(alts);
-  };
+  rec.onresult = e => handleResult(Array.from(e.results[0]).map(r => r.transcript));
   rec.onerror = e => {
     setListening(false);
-    if (e.error === 'no-speech') {
-      showResult('<span class="result-error">음성이 감지되지 않았습니다. 다시 시도해주세요.</span>');
-    } else if (e.error !== 'aborted') {
-      showResult(`<span class="result-error">마이크 오류: ${e.error}</span>`);
-    }
+    if (e.error === 'no-speech') showResult('<span class="result-error">No speech detected. Please try again.</span>');
+    else if (e.error !== 'aborted') showResult(`<span class="result-error">Mic error: ${e.error}</span>`);
   };
   rec.onend = () => setListening(false);
 }
 
-// ── Helpers ──────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────
 function normalize(t) {
-  return t.toLowerCase().replace(/[.,!?;:'"()\-]/g, '').replace(/\s+/g, ' ').trim();
+  return t.toLowerCase().replace(/[.,!?;:'"()\-—]/g, '').replace(/\s+/g, ' ').trim();
 }
 
+function wordMatchRatio(spoken, target) {
+  const tw = target.split(' ');
+  const sw = spoken.split(' ');
+  const matched = tw.filter(w => sw.includes(w)).length;
+  return matched / tw.length;
+}
 function setListening(val) {
   isListening = val;
   document.getElementById('micBtn').classList.toggle('listening', val);
-  document.getElementById('micIcon').textContent = val ? 'stop' : 'mic';
-  document.getElementById('micLabel').textContent = val ? '듣는 중... 말해주세요' : '클릭하여 말하기';
+  document.getElementById('micIcon').textContent  = val ? 'stop' : 'mic';
+  document.getElementById('micLabel').textContent = val ? 'Listening... speak now' : 'Tap to speak';
 }
+function showResult(html) { document.getElementById('resultArea').innerHTML = html; }
 
-function showResult(html) {
-  document.getElementById('resultArea').innerHTML = html;
-}
-
-// ── Render ───────────────────────────────────────────────────────
+// ── Render practice ───────────────────────────────────────────────
 function render() {
-  const { sentence, translation, hiddenIndices } = sentences[idx];
+  const { sentence, translation, hiddenIndices } = todayData.sentences[todayData.idx];
   const words = sentence.split(' ');
 
-  // Sentence words
   const display = document.getElementById('sentenceDisplay');
   display.innerHTML = '';
   words.forEach((word, i) => {
     const span = document.createElement('span');
-    const hidden = level === 3 || (level === 2 && hiddenIndices.includes(i));
+    const hidden = todayData.level === 3 || (todayData.level === 2 && hiddenIndices.includes(i));
     if (hidden) {
       span.className = 'word-blank';
-      const len = word.replace(/[.,!?]/g, '').length;
-      span.style.minWidth = Math.max(2.2, len * 0.68) + 'rem';
+      span.style.minWidth = Math.max(2.2, word.replace(/[.,!?—]/g, '').length * 0.68) + 'rem';
     } else {
       span.className = 'word-visible';
       span.textContent = word;
@@ -469,57 +650,54 @@ function render() {
   });
 
   document.getElementById('translationText').textContent = translation;
-  document.getElementById('counter').textContent = `${idx + 1} / ${sentences.length}`;
+  document.getElementById('counter').textContent = `${todayData.idx + 1} / 3`;
 
-  // Progress bar
-  const totalSteps = sentences.length * 3;
-  const doneSteps  = idx * 3 + (level - 1);
-  document.getElementById('progressBar').style.width = (doneSteps / totalSteps * 100) + '%';
+  const doneSteps = todayData.completedCount * 3 + (todayData.level - 1);
+  document.getElementById('progressBar').style.width = (doneSteps / 9 * 100) + '%';
 
-  // Level chips
   document.querySelectorAll('.level-chip').forEach(chip => {
     const l = +chip.dataset.level;
-    chip.classList.toggle('active', l === level);
-    chip.classList.toggle('done',   l < level);
+    chip.classList.toggle('active', l === todayData.level);
+    chip.classList.toggle('done',   l < todayData.level);
   });
-
   showResult('');
 }
 
-// ── Speech result ────────────────────────────────────────────────
+// ── Speech result ──────────────────────────────────────────────────
 function handleResult(alts) {
-  const target  = normalize(sentences[idx].sentence);
-  const matched = alts.some(t => normalize(t) === target);
-
-  if (matched) {
-    onCorrect();
-  } else {
+  const target  = normalize(todayData.sentences[todayData.idx].sentence);
+  const matched = alts.some(t => {
+    const n = normalize(t);
+    return n === target || wordMatchRatio(n, target) >= 0.95;
+  });
+  if (matched) onCorrect();
+  else {
     showResult(
-      `<div>들린 내용: <span class="result-heard">"${alts[0]}"</span></div>` +
-      `<div class="result-error">다시 시도해보세요 🙂</div>`
+      `<div>Heard: <span class="result-heard">"${alts[0]}"</span></div>` +
+      `<div class="result-error">Try again 🙂</div>`
     );
   }
 }
 
 function onCorrect() {
-  if (level < 3) {
-    showResult('<span class="result-success">✅ 정확해요! 다음 레벨 →</span>');
-    setTimeout(() => { level++; render(); }, 900);
+  if (todayData.level < 3) {
+    showResult('<span class="result-success">✅ Nice! Next level →</span>');
+    setTimeout(() => { todayData.level++; saveCache(); render(); }, 900);
   } else {
-    showResult('<span class="result-success">✅ 완벽해요!</span>');
+    showResult('<span class="result-success">✅ Perfect!</span>');
     showCelebration();
   }
 }
 
-// ── Celebration ──────────────────────────────────────────────────
+// ── Celebration ────────────────────────────────────────────────────
 function showCelebration() {
-  const isLast = idx === sentences.length - 1;
+  const isLast = todayData.idx === 2;
   document.getElementById('celEmoji').textContent = isLast ? '🏆' : '🎉';
-  document.getElementById('celTitle').textContent = isLast ? '전부 완료!' : '훌륭해요!';
-  document.getElementById('celSub').textContent = isLast
-    ? '10개 문장을 모두 마스터했어요!'
-    : `"${sentences[idx].sentence}"\n완벽하게 외웠어요!`;
-  document.getElementById('celBtn').textContent = isLast ? '완료 🏆' : '다음 문장 →';
+  document.getElementById('celTitle').textContent = isLast ? "Today's Done!" : 'Great job!';
+  document.getElementById('celSub').textContent   = isLast
+    ? "You've mastered all 3 sentences today!"
+    : `"${todayData.sentences[todayData.idx].sentence}"\nYou nailed it!`;
+  document.getElementById('celBtn').textContent = isLast ? 'Done 🏆' : 'Next sentence →';
   celebNext = isLast ? 'complete' : 'next';
   document.getElementById('overlay').classList.add('show');
 }
@@ -527,60 +705,151 @@ function showCelebration() {
 function onCelebNext() {
   document.getElementById('overlay').classList.remove('show');
   if (celebNext === 'complete') {
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('completeScreen').classList.add('show');
+    todayData.completedCount = 3;
+    saveCache();
+    finalizeDay(todayData);
+    showCompleteScreen();
   } else {
-    idx++;
-    level = 1;
+    todayData.completedCount++;
+    todayData.idx++;
+    todayData.level = 1;
+    saveCache();
     render();
   }
 }
 
-function restartApp() {
-  idx = 0; level = 1;
-  document.getElementById('completeScreen').classList.remove('show');
-  document.getElementById('app').style.display = 'flex';
-  render();
-}
-
-// ── Level chip navigation ─────────────────────────────────────────
+// ── Level chip nav ─────────────────────────────────────────────────
 document.getElementById('levelChips').addEventListener('click', e => {
   const chip = e.target.closest('.level-chip');
   if (!chip) return;
   const target = +chip.dataset.level;
-  if (target < level) {
-    if (isListening) { rec.stop(); }
-    level = target;
+  if (target < todayData.level) {
+    if (isListening) rec.stop();
+    todayData.level = target;
     render();
   }
 });
 
-// ── Read aloud ────────────────────────────────────────────────────
-function speakSentence() {
+// ── Read aloud ─────────────────────────────────────────────────────
+document.getElementById('readBtn').addEventListener('click', () => {
   if (!window.speechSynthesis) return;
   speechSynthesis.cancel();
-  const btn = document.getElementById('readBtn');
-  const utter = new SpeechSynthesisUtterance(sentences[idx].sentence);
-  utter.lang = 'en-US';
-  utter.rate = 0.88;
+  const btn   = document.getElementById('readBtn');
+  const utter = new SpeechSynthesisUtterance(todayData.sentences[todayData.idx].sentence);
+  utter.lang  = 'en-US';
+  utter.rate  = 0.88;
   utter.onstart = () => btn.classList.add('speaking');
   utter.onend   = () => btn.classList.remove('speaking');
   utter.onerror = () => btn.classList.remove('speaking');
   speechSynthesis.speak(utter);
-}
+});
 
-document.getElementById('readBtn').addEventListener('click', speakSentence);
-
-// ── Mic button ───────────────────────────────────────────────────
+// ── Mic button ─────────────────────────────────────────────────────
 document.getElementById('micBtn').addEventListener('click', () => {
   if (!rec) return;
   if (isListening) {
     rec.stop();
   } else {
-    showResult('<span style="color:var(--md-sys-color-on-surface-variant)">듣는 중... 말해주세요</span>');
+    showResult('<span style="color:var(--md-sys-color-on-surface-variant)">Listening... speak now</span>');
     setListening(true);
     try { rec.start(); } catch { setListening(false); }
   }
+});
+
+// ── Calendar rendering ─────────────────────────────────────────────
+function renderCalendar() {
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('calMonthLabel').textContent = `${monthNames[calMonth]} ${calYear}`;
+
+  const todayStr   = getDateStr();
+  const firstDay   = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const grid       = document.getElementById('calGrid');
+  grid.innerHTML   = '';
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds  = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const el  = document.createElement('div');
+    el.className = 'cal-day';
+
+    const num = document.createElement('span');
+    num.textContent = d;
+    el.appendChild(num);
+
+    if (ds === todayStr) el.classList.add('today-cell');
+
+    const rec = history[ds];
+    if (rec) {
+      const dot = document.createElement('span');
+      dot.className = 'cal-dot';
+      if (rec.success) {
+        el.classList.add('success-cell');
+        dot.textContent = '✓';
+      } else if (rec.completed > 0) {
+        el.classList.add('partial-cell');
+        dot.textContent = `${rec.completed}/3`;
+      } else {
+        el.classList.add('fail-cell');
+        dot.textContent = '✗';
+      }
+      el.appendChild(dot);
+    } else if (ds > todayStr) {
+      el.classList.add('future-day');
+    }
+
+    grid.appendChild(el);
+  }
+
+  renderStats();
+}
+
+function renderStats() {
+  const entries  = Object.values(history);
+  const total    = entries.length;
+  const successes = entries.filter(e => e.success).length;
+
+  // Consecutive success streak (from today backwards)
+  let streak = 0;
+  const check = new Date();
+  for (let i = 0; i < 365; i++) {
+    const ds = getDateStr(check);
+    const r  = history[ds];
+    if (r && r.success) { streak++; }
+    else if (ds <= getDateStr()) break;
+    check.setDate(check.getDate() - 1);
+  }
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-num">${streak}</div>
+      <div class="stat-label">Streak</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">${successes}</div>
+      <div class="stat-label">Days Won</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">${total ? Math.round(successes / total * 100) : 0}%</div>
+      <div class="stat-label">Success Rate</div>
+    </div>
+  `;
+}
+
+document.getElementById('prevMonthBtn').addEventListener('click', () => {
+  calMonth--;
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+});
+document.getElementById('nextMonthBtn').addEventListener('click', () => {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0;  calYear++; }
+  renderCalendar();
 });
 </script>
 </body>
